@@ -79,7 +79,7 @@ button{
 <header>TalkBd</header>
 
 <div id="chat">
-<div class="bot"><b>Talk Bd:</b>Ami ki vabe tomake help korte pari bolo!</div>
+<div class="bot"><b>TalkBd:</b>Ami ki vabe tomake help korte pari bolo!</div>
 </div>
 
 <div class="inputBox">
@@ -100,33 +100,21 @@ let chat=document.getElementById("chat");
 
 chat.innerHTML += "<div class='user'><b>You:</b> "+text+"</div>";
 
-let reply="Hmm Bolo ami ki vabe tumake help korte pari . ami tumar satei achi.";
+let reply="Bolo Ki bolbe";
 
 let t=text.toLowerCase();
 
 if(t=="hi"||t=="hello"){
 reply="Hello! Welcome to TalkBd.";
 }
-else if(t=="Kemon acho tumi"){
-reply="Ami valo achi tumi kmn acho!";
-}
-else if(t=="Tmr name ki"){
-reply="Amar name TalkBd.";
-}
-
-
-
-
-
-
 if(t.includes("hi") || t.includes("hello")){
     reply = "Hello! Welcome.";
 }
 else if(t.includes("name")){
     reply = "Amar name TalkBd.";
 }
-else if(t.includes("tumake ke made korise")){
-    reply = "Amake banaise SFS jeta Shahriar Foysal Sad";
+else if(t.includes("made")){
+    reply = "Amake banaise Shahriar Foysal Sad";
 }
 else if(t.includes("kemon acho tumi")){
     reply = "Ami valo achi tumi kmn acho.";
@@ -147,10 +135,6 @@ else if(t.includes("tumi kothai thako") || t.includes("js")){
 else if(t.includes("tumake made korise ke") || t.includes("js")){
     reply = "Shahriar Foysal Sad.";
 }
-else if(t.includes("banaise ke") || t.includes("js")){
-    reply = "Shahriar Foysal Sad.";
-}
-
 
 else if(t.includes("Ki khobor")){
     reply = "Amr khobor valo tmr khobor ki";
@@ -161,8 +145,8 @@ else if(t.includes("valo")){
 else if(t.includes("ki koro")){
     reply = "ami online a achi tmr sate bolo ki bolbe";
 }
-else if(t.includes("ke banaise tumak")){
-    reply = "Shahriar Foysal Sad";
+else if(t.includes("banaise")){
+    reply = "Amake banaise Shahriar Foysal Sad";
 }
 else if(t.includes("ok")){
     reply = "ok";
@@ -170,25 +154,102 @@ else if(t.includes("ok")){
 
 
 
-else if(t.includes("ki obostha tumar")){
+else if(t.includes("obostha")){
     reply = "Valo";
 }
-else if(t.includes("Accha pore kotha hobe ni")){
+else if(t.includes("pore kotha")){
     reply = "okk";
 }
-
-
-
-
-
-
-
-
-
-
-else if(t=="time"){
-reply=new Date().toLocaleTimeString();
+else if(t.includes("khaicho")){
+    reply = "Ami Ai ami khaina ";
 }
+else if(t.includes("tumake baneyache ke")){
+    reply = "Shahriar Foysal Sad";
+}
+else if(t.includes("Kamon")){
+    reply = "Valo achi tumi kemon acho";
+}
+else if(t.includes("obostha")){
+    reply = "aei to valoi";
+}
+else if(t.includes("Accha")){
+    reply = "Hmm";
+}
+else if(t.includes("thako ")){
+    reply = "Ami online a thaki";
+}
+else if(t.includes("paro")){
+    reply = "Ami shudhu kotha bolte pari";
+}
+else if(t.includes("SFS")){
+    reply = "SFS mane Shahriar Foysal Sad.Tobe aro onno kisuo hoi";
+}
+else if(t.includes("boios")){
+    reply = "Amr boios nai ami ekjon AI";
+}
+else if(t.includes("manus")){
+    reply = "Na AI";
+}
+else if(t.includes("desh")){
+    reply = "Bangladesh";
+}
+else if(t.includes("country")){
+    reply = "Bangladesh";
+}
+else if(t.includes("Thanks")){
+    reply = "Welcome";
+}
+
+else if(t.includes("kamon")){
+    reply = "Valo ";
+}
+else if(t.includes("baniyece")){
+    reply = "Amake banaise Shahriar Foysal Sad";
+}
+else if(t.includes("yes")){
+    reply = "hmm";
+}
+else if(t.includes("Age")){
+    reply = "Ami ekjon AI amr age nai";
+}
+else if(t.includes("date")){
+    reply = "Sorry ami date bolte pari na";
+}
+else if(t.includes("good morning")){
+    reply = "Good morning";
+}
+else if(t.includes("Good night")){
+    reply = "Good night";
+}
+else if(t.includes("Good noon")){
+    reply = "Good noon";
+}
+else if(t.includes("Good evining")){
+    reply = "Good evining";
+}
+else if(t.includes("kortecho")){
+    reply = "Tumar sate online a achi";
+}
+else if(t.includes("Suno")){
+    reply = "Hmm bolo";
+}
+else if(t.includes("Na thak")){
+    reply = "okk";
+}
+else if(t.includes("good night")){
+    reply = "Good night";
+}
+
+else if(t.includes("good")){
+    reply = "Thanks";
+}
+
+
+
+
+
+
+
 else if(t=="date"){
 reply=new Date().toLocaleDateString();
 }
