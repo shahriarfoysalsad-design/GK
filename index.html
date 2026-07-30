@@ -260,9 +260,6 @@ else if(t.includes("kamon")){
 else if(t.includes("age")){
     reply ="Ami manus noi ami Ai tai amr age nai"
 }
-else if(t.includes("Shahriar Foysal Sad")){
-    reply  ="Shahriar Foysal Sad 1 jon Bangladeshi.Se Naogaon jela r Manda Uojela te thake "
-}
 else if(t.includes("khaiso")){
     reply ="Ami khaina to ami AI"
 }
@@ -316,33 +313,5 @@ send();
 
 </script>
 
-</body>
-</html>
-
-
-
-<html>
-<body>
-    <button id="themeBtn" onclick="toggleTheme()">🌙</button>
-<script>
-function toggleTheme(){
-    document.body.classList.toggle("dark");
-
-    let btn=document.getElementById("themeBtn");
-
-    if(document.body.classList.contains("dark")){
-        btn.innerHTML="☀️";
-        localStorage.setItem("theme","dark");
-    }else{
-        btn.innerHTML="🌙";
-        localStorage.setItem("theme","light");
-    }
-}
-
-if(localStorage.getItem("theme")==="dark"){
-    document.body.classList.add("dark");
-    document.getElementById("themeBtn").innerHTML="☀️";
-}
-</script>
 </body>
 </html>
