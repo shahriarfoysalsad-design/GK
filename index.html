@@ -132,7 +132,8 @@ else if(t.includes("kothai") || t.includes("js")){
 }
 
 
-else if(t.includes("Ki khobor")){
+
+else if(t.includes("khobor")){
     reply = "Amr khobor valo tmr khobor ki";
 }
 else if(t.includes("valo")){
@@ -146,6 +147,12 @@ else if(t.includes("banaise")){
 }
 else if(t.includes("ok")){
     reply = "ok";
+}
+else if(t.includes("banase")){
+    reply ="Amake banaise Shahriar Foysal Sad"
+}
+else if(t.includes("toiri")){
+    reply ="Amake banaise Shahriar Foysal Sad"
 }
 
 
@@ -225,10 +232,10 @@ else if(t.includes("Good evining")){
 else if(t.includes("kortecho")){
     reply = "Tumar sate online a achi";
 }
-else if(t.includes("Suno")){
+else if(t.includes("suno")){
     reply = "Hmm bolo";
 }
-else if(t.includes("Na thak")){
+else if(t.includes("thak")){
     reply = "okk";
 }
 else if(t.includes("good night")){
@@ -244,7 +251,7 @@ else if(t.includes("Khaiso")){
 else if(t.includes("tarik")){
     reply ="Ami tarik bolte pari na"
 }
-else if(t.includes("Kamon acho")){
+else if(t.includes("kmn")){
     reply ="Ami valo achi tumi kmon acho"
 }
 else if(t.includes("kamon")){
@@ -253,7 +260,7 @@ else if(t.includes("kamon")){
 else if(t.includes("age")){
     reply ="Ami manus noi ami Ai tai amr age nai"
 }
-else if(t.includes("ke")){
+else if(t.includes("Shahriar Foysal Sad")){
     reply  ="Shahriar Foysal Sad 1 jon Bangladeshi.Se Naogaon jela r Manda Uojela te thake "
 }
 else if(t.includes("khaiso")){
@@ -309,5 +316,33 @@ send();
 
 </script>
 
+</body>
+</html>
+
+
+
+<html>
+<body>
+    <button id="themeBtn" onclick="toggleTheme()">🌙</button>
+<script>
+function toggleTheme(){
+    document.body.classList.toggle("dark");
+
+    let btn=document.getElementById("themeBtn");
+
+    if(document.body.classList.contains("dark")){
+        btn.innerHTML="☀️";
+        localStorage.setItem("theme","dark");
+    }else{
+        btn.innerHTML="🌙";
+        localStorage.setItem("theme","light");
+    }
+}
+
+if(localStorage.getItem("theme")==="dark"){
+    document.body.classList.add("dark");
+    document.getElementById("themeBtn").innerHTML="☀️";
+}
+</script>
 </body>
 </html>
