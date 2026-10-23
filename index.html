@@ -2,316 +2,664 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TalkBd</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1020">
+<title>SFS PicBD - Photo Editor</title>
 <style>
-body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#f2f2f2;
-}
-
-header{
-    background:#0066ff;
-    color:white;
-    text-align:center;
-    padding:15px;
-    font-size:28px;
-    font-weight:bold;
-}
-
-#chat{
-    width:90%;
-    max-width:600px;
-    height:400px;
-    margin:20px auto;
-    background:white;
-    border-radius:10px;
-    overflow-y:auto;
-    padding:10px;
-    box-shadow:0 0 10px rgba(0,0,0,.2);
-}
-
-.user{
-    background:#0066ff;
-    color:white;
-    padding:10px;
-    border-radius:10px;
-    margin:8px 0;
-    text-align:right;
-}
-
-.bot{
-    background:#e5e5e5;
-    color:black;
-    padding:10px;
-    border-radius:10px;
-    margin:8px 0;
-}
-
-.inputBox{
-    width:90%;
-    max-width:600px;
-    margin:auto;
-    display:flex;
-    gap:10px;
-}
-
-input{
-    flex:1;
-    padding:12px;
-    font-size:16px;
-}
-
-button{
-    padding:12px 20px;
-    background:#0066ff;
-    color:white;
-    border:none;
-    cursor:pointer;
-}
+:root{--bg:#0b1020;--panel:#141d30;--line:#2a3851;--cyan:#55e2ff;--text:#f4f7ff;--muted:#9eacc4}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+button,input,select{font:inherit}
+header{height:68px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;background:#111a2d;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.logo{font-size:25px;font-weight:900;letter-spacing:-1px;color:var(--cyan)}
+.logo span{color:white}
+.header-actions{display:flex;gap:8px}
+.btn{border:1px solid #34445e;background:#22304a;color:white;border-radius:10px;padding:11px 13px;cursor:pointer;font-size:13px;font-weight:bold}
+.btn:hover{filter:brightness(1.15)}
+.btn.primary{background:var(--cyan);border-color:var(--cyan);color:#071321}
+.btn:disabled{opacity:.5}
+main{max-width:1300px;margin:auto;padding:18px}
+.toolbar{display:flex;gap:8px;overflow-x:auto;padding:0 0 14px;margin-bottom:14px}
+.tool{min-width:76px;background:var(--panel);border:1px solid var(--line);color:#dce8fb;border-radius:12px;padding:12px 10px;cursor:pointer;font-size:12px}
+.tool span{display:block;font-size:21px;margin-bottom:7px}
+.tool.active{border-color:var(--cyan);background:#173145;color:var(--cyan)}
+.editor{display:grid;grid-template-columns:minmax(0,1fr) 315px;gap:16px;align-items:start}
+.canvas-panel,.settings{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:15px;min-width:0}
+.canvas-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:13px}
+h2{font-size:16px;margin:0}
+.status{font-size:11px;color:var(--muted)}
+.stage{height:min(65vh,650px);min-height:320px;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;background-color:#202a3b;background-image:linear-gradient(45deg,#2c3749 25%,transparent 25%),linear-gradient(-45deg,#2c3749 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#2c3749 75%),linear-gradient(-45deg,transparent 75%,#2c3749 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0}
+canvas{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
+.empty{text-align:center;color:var(--muted);padding:20px}
+.empty .camera{font-size:56px;margin-bottom:12px}
+.empty p{font-size:13px;line-height:1.6}
+.upload-big{display:inline-block;background:var(--cyan);color:#071321;padding:13px 17px;border-radius:10px;font-weight:bold;cursor:pointer;margin-top:10px}
+input[type=file]{display:none}
+.bottom-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.bottom-actions .btn{flex:1}
+.settings h2{margin:2px 0 17px}
+.setting{margin-bottom:19px}
+.setting label{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:#dbe6f7;margin-bottom:9px}
+.val{color:var(--cyan)}
+input[type=range]{width:100%;accent-color:var(--cyan);cursor:pointer}
+select,input[type=text],input[type=number]{width:100%;background:#0c1425;border:1px solid #35445f;border-radius:9px;padding:11px;color:white;outline:none}
+input[type=color]{width:44px;height:38px;background:transparent;border:0;cursor:pointer}
+.row{display:flex;gap:8px}
+.row>*{flex:1;min-width:0}
+.presets{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.preset{padding:9px 4px;background:#202d44;color:white;border:1px solid #34445e;border-radius:8px;cursor:pointer;font-size:11px}
+.preset.active{border-color:var(--cyan);color:var(--cyan)}
+hr{border:0;border-top:1px solid var(--line);margin:18px 0}
+.hidden{display:none!important}
+.note{font-size:11px;color:var(--muted);line-height:1.6;margin-top:9px}
+footer{text-align:center;color:#7f8da6;font-size:12px;padding:25px 10px}
+@media(max-width:850px){.editor{grid-template-columns:1fr}.stage{height:50vh;min-height:270px}.settings{padding:17px}.toolbar{margin-right:-18px}.canvas-panel{padding:10px}main{padding:14px 10px}}
 </style>
 </head>
-
 <body>
+<header>
+  <div class="logo">SFS <span>PicBD</span></div>
+  <div class="header-actions">
+    <button class="btn" id="undo">↶ Reset</button>
+    <button class="btn primary" id="saveTop">↓ Save</button>
+  </div>
+</header>
 
-<header>TalkBd</header>
+<main>
+  <div class="toolbar">
+    <button class="tool active" data-tab="crop"><span>▣</span>Crop</button>
+    <button class="tool" data-tab="adjust"><span>☼</span>Adjust</button>
+    <button class="tool" data-tab="filters"><span>◐</span>Filters</button>
+    <button class="tool" data-tab="transform"><span>⤾</span>Rotate</button>
+    <button class="tool" data-tab="text"><span>T</span>Text</button>
+    <button class="tool" data-tab="background"><span>▧</span>Background</button>
+    <button class="tool" data-tab="border"><span>▢</span>Border</button>
+  </div>
 
-<div id="chat">
+  <div class="editor">
+    <section class="canvas-panel">
+      <div class="canvas-head">
+        <h2>Photo Workspace</h2>
+        <span class="status" id="imageInfo">No photo selected</span>
+      </div>
 
-</div>
+      <div class="stage">
+        <div class="empty" id="empty">
+          <div class="camera">📸</div>
+          <h3>Your creativity starts here</h3>
+          <p>Upload a photo from your gallery<br>to start editing with SFS PicBD.</p>
+          <label for="upload" class="upload-big">＋ Upload Photo</label>
+        </div>
+        <canvas id="canvas" class="hidden"></canvas>
+      </div>
 
-<div class="inputBox">
-<input type="text" id="msg" placeholder="Type your message...">
-<button onclick="send()">➤</button>
-</div>
+      <input id="upload" type="file" accept="image/*">
+
+      <div class="bottom-actions">
+        <button class="btn" id="rotateLeft">↶ Rotate Left</button>
+        <button class="btn" id="rotateRight">↷ Rotate Right</button>
+        <button class="btn" id="flipH">↔ Flip</button>
+        <button class="btn" id="flipV">↕ Flip</button>
+      </div>
+      <div class="bottom-actions">
+        <button class="btn" id="resetEdits">Reset All Edits</button>
+        <button class="btn primary" id="saveBottom">Download Edited Photo</button>
+      </div>
+      <p class="note" id="status">Choose a photo to begin editing.</p>
+    </section>
+
+    <aside class="settings">
+      <!-- CROP -->
+      <section class="tab-panel" data-panel="crop">
+        <h2>✂ Crop & Resize</h2>
+        <div class="setting">
+          <label>Aspect Ratio</label>
+          <select id="ratio">
+            <option value="original">Original Ratio</option>
+            <option value="1:1">1:1 Square</option>
+            <option value="4:5">4:5 Portrait</option>
+            <option value="3:4">3:4 Portrait</option>
+            <option value="9:16">9:16 Story / Reels</option>
+            <option value="16:9">16:9 YouTube</option>
+            <option value="4:3">4:3 Classic</option>
+          </select>
+        </div>
+        <div class="setting">
+          <label>Horizontal Crop <span class="val" id="cropXVal">50%</span></label>
+          <input id="cropX" type="range" min="0" max="100" value="50">
+        </div>
+        <div class="setting">
+          <label>Vertical Crop <span class="val" id="cropYVal">50%</span></label>
+          <input id="cropY" type="range" min="0" max="100" value="50">
+        </div>
+        <div class="setting">
+          <label>Zoom <span class="val" id="zoomVal">100%</span></label>
+          <input id="zoom" type="range" min="100" max="250" value="100">
+        </div>
+        <button class="btn full" id="cropReset">Reset Crop</button>
+        <p class="note">Choose a ratio, then adjust the crop position and zoom. The downloaded image uses the same crop.</p>
+      </section>
+
+      <!-- ADJUST -->
+      <section class="tab-panel hidden" data-panel="adjust">
+        <h2>☼ Light & Color</h2>
+        <div class="setting">
+          <label>Brightness <span class="val" id="brightnessVal">100%</span></label>
+          <input id="brightness" type="range" min="0" max="200" value="100">
+        </div>
+        <div class="setting">
+          <label>Contrast <span class="val" id="contrastVal">100%</span></label>
+          <input id="contrast" type="range" min="0" max="200" value="100">
+        </div>
+        <div class="setting">
+          <label>Saturation <span class="val" id="saturationVal">100%</span></label>
+          <input id="saturation" type="range" min="0" max="200" value="100">
+        </div>
+        <div class="setting">
+          <label>Warmth <span class="val" id="warmthVal">0</span></label>
+          <input id="warmth" type="range" min="-100" max="100" value="0">
+        </div>
+        <div class="setting">
+          <label>Blur <span class="val" id="blurVal">0px</span></label>
+          <input id="blur" type="range" min="0" max="10" value="0" step="0.5">
+        </div>
+        <div class="setting">
+          <label>Grayscale <span class="val" id="grayVal">0%</span></label>
+          <input id="gray" type="range" min="0" max="100" value="0">
+        </div>
+        <button class="btn full" id="adjustReset">Reset Adjustments</button>
+      </section>
+
+      <!-- FILTERS -->
+      <section class="tab-panel hidden" data-panel="filters">
+        <h2>◐ Photo Filters</h2>
+        <div class="presets">
+          <button class="preset active" data-filter="none">Original</button>
+          <button class="preset" data-filter="vivid">Vivid</button>
+          <button class="preset" data-filter="warm">Warm</button>
+          <button class="preset" data-filter="cool">Cool</button>
+          <button class="preset" data-filter="vintage">Vintage</button>
+          <button class="preset" data-filter="mono">Mono</button>
+          <button class="preset" data-filter="fade">Fade</button>
+          <button class="preset" data-filter="dramatic">Dramatic</button>
+          <button class="preset" data-filter="dream">Dream</button>
+        </div>
+        <p class="note">Tap a preset to change the photo's appearance. You can fine-tune it in Adjust.</p>
+      </section>
+
+      <!-- TRANSFORM -->
+      <section class="tab-panel hidden" data-panel="transform">
+        <h2>⤾ Transform</h2>
+        <div class="setting">
+          <label>Rotation <span class="val" id="rotationVal">0°</span></label>
+          <input id="rotation" type="range" min="-180" max="180" value="0">
+        </div>
+        <div class="row">
+          <button class="btn" id="turnL">↶ 90°</button>
+          <button class="btn" id="turnR">↷ 90°</button>
+        </div>
+        <hr>
+        <button class="btn full" id="resetTransform">Reset Transform</button>
+      </section>
+
+      <!-- TEXT -->
+      <section class="tab-panel hidden" data-panel="text">
+        <h2>T Add Text</h2>
+        <div class="setting">
+          <label>Text Content</label>
+          <input id="text" type="text" placeholder="Write your name...">
+        </div>
+        <div class="setting">
+          <label>Font Style</label>
+          <select id="font">
+            <option value="Arial">Modern</option>
+            <option value="Georgia">Classic</option>
+            <option value="Impact">Bold</option>
+            <option value="monospace">Tech</option>
+            <option value="cursive">Handwriting</option>
+          </select>
+        </div>
+        <div class="setting">
+          <label>Text Size <span class="val" id="textSizeVal">48px</span></label>
+          <input id="textSize" type="range" min="12" max="120" value="48">
+        </div>
+        <div class="setting">
+          <label>Text Color</label>
+          <input id="textColor" type="color" value="#ffffff">
+        </div>
+        <div class="setting">
+          <label>Text Position</label>
+          <select id="textPosition">
+            <option value="bottom">Bottom Center</option>
+            <option value="top">Top Center</option>
+            <option value="center">Center</option>
+            <option value="left">Bottom Left</option>
+            <option value="right">Bottom Right</option>
+          </select>
+        </div>
+        <div class="setting">
+          <label><input id="textShadow" type="checkbox" checked style="width:auto"> Add text shadow</label>
+        </div>
+        <button class="btn full" id="clearText">Remove Text</button>
+      </section>
+
+      <!-- BACKGROUND -->
+      <section class="tab-panel hidden" data-panel="background">
+        <h2>▧ Background</h2>
+        <div class="setting">
+          <label>Canvas Background Color</label>
+          <input id="bgColor" type="color" value="#ffffff">
+        </div>
+        <div class="setting">
+          <label>Image Fit</label>
+          <select id="fit">
+            <option value="cover">Fill Canvas (Crop)</option>
+            <option value="contain">Fit Image (Show Whole Photo)</option>
+          </select>
+        </div>
+        <p class="note">Background color is visible in empty areas when using Fit Image. This tool does not automatically cut a person or object out of a photo.</p>
+      </section>
+
+      <!-- BORDER -->
+      <section class="tab-panel hidden" data-panel="border">
+        <h2>▢ Border & Frame</h2>
+        <div class="setting">
+          <label>Border Width <span class="val" id="borderWidthVal">0px</span></label>
+          <input id="borderWidth" type="range" min="0" max="40" value="0">
+        </div>
+        <div class="setting">
+          <label>Border Color</label>
+          <input id="borderColor" type="color" value="#55e2ff">
+        </div>
+        <div class="setting">
+          <label>Corner Radius <span class="val" id="radiusVal">0px</span></label>
+          <input id="radius" type="range" min="0" max="80" value="0">
+        </div>
+        <button class="btn full" id="resetBorder">Reset Frame</button>
+      </section>
+
+      <hr>
+      <h2>💾 Export Image</h2>
+      <div class="setting">
+        <label>File Format</label>
+        <select id="format">
+          <option value="image/png">PNG — High Quality</option>
+          <option value="image/jpeg">JPG — Smaller File</option>
+        </select>
+      </div>
+      <div class="setting">
+        <label>Export Size</label>
+        <select id="exportSize">
+          <option value="original">Original Resolution</option>
+          <option value="2048">2048px Long Edge</option>
+          <option value="1080">1080px Long Edge</option>
+        </select>
+      </div>
+      <button class="btn primary full" id="save">↓ Download Photo</button>
+      <p class="note">Your image is edited locally in your browser; it is not uploaded to a server by this page.</p>
+    </aside>
+  </div>
+</main>
+
+<footer>SFS PicBD © 2026 · Create. Edit. Save.</footer>
 
 <script>
+const $ = id => document.getElementById(id);
+const canvas = $('canvas');
+const ctx = canvas.getContext('2d');
+let img = null;
+let imageName = 'SFS-PicBD';
+let filter = 'none';
+let rotation = 0;
+let flipX = 1, flipY = 1;
+let renderTimer = null;
 
-function send(){
+const ids = [
+ 'ratio','cropX','cropY','zoom','brightness','contrast','saturation',
+ 'warmth','blur','gray','rotation','text','font','textSize',
+ 'textColor','textPosition','textShadow','bgColor','fit',
+ 'borderWidth','borderColor','radius'
+];
 
-let input=document.getElementById("msg");
-let text=input.value.trim();
+const defaults = {
+ ratio:'original',cropX:50,cropY:50,zoom:100,
+ brightness:100,contrast:100,saturation:100,warmth:0,blur:0,gray:0,
+ rotation:0,text:'',font:'Arial',textSize:48,textColor:'#ffffff',
+ textPosition:'bottom',textShadow:true,bgColor:'#ffffff',fit:'cover',
+ borderWidth:0,borderColor:'#55e2ff',radius:0
+};
 
-if(text=="") return;
+function val(id){return $(id).value}
+function num(id){return Number(val(id))}
+function setStatus(s){$('status').textContent=s}
 
-let chat=document.getElementById("chat");
-
-chat.innerHTML += "<div class='user'><b>You:</b> "+text+"</div>";
-
-let reply="Bolo Ki bolbe";
-
-let t=text.toLowerCase();
-
-if(t=="hi"||t=="hello"){
-reply="Hello! Welcome to TalkBd.";
-}
-if(t.includes("hi") || t.includes("hello")){
-    reply = "Hello! Welcome.";
-}
-else if(t.includes("name")){
-    reply = "Amar name TalkBd.";
-}
-else if(t.includes("made")){
-    reply = "Amake banaise Shahriar Foysal Sad";
-}
-
-else if(t.includes("ohh") || t.includes("js")){
-    reply = "Hmm.";
-}
-
-else if(t.includes("Amio valo achi") || t.includes("js")){
-    reply = "ohh.";
-}
-else if(t.includes("hmm") || t.includes("js")){
-    reply = "ok.";
-}
-else if(t.includes("kothai") || t.includes("js")){
-    reply = "online a.";
-}
-
-
-
-else if(t.includes("khobor")){
-    reply = "Amr khobor valo tmr khobor ki";
-}
-else if(t.includes("valo")){
-    reply = "ohh";
-}
-else if(t.includes("ki koro")){
-    reply = "ami online a achi tmr sate bolo ki bolbe";
-}
-else if(t.includes("banaise")){
-    reply = "Amake banaise Shahriar Foysal Sad";
-}
-else if(t.includes("ok")){
-    reply = "ok";
-}
-else if(t.includes("banase")){
-    reply ="Amake banaise Shahriar Foysal Sad"
-}
-else if(t.includes("toiri")){
-    reply ="Amake banaise Shahriar Foysal Sad"
+function updateLabels(){
+ const pairs = {
+ cropX:['cropXVal','%'],cropY:['cropYVal','%'],zoom:['zoomVal','%'],
+ brightness:['brightnessVal','%'],contrast:['contrastVal','%'],
+ saturation:['saturationVal','%'],warmth:['warmthVal',''],
+ blur:['blurVal','px'],gray:['grayVal','%'],
+ rotation:['rotationVal','°'],textSize:['textSizeVal','px'],
+ borderWidth:['borderWidthVal','px'],radius:['radiusVal','px']
+ };
+ Object.entries(pairs).forEach(([id,[out,suffix]])=>{
+   $(out).textContent=val(id)+suffix;
+ });
 }
 
-
-else if(t.includes("obostha")){
-    reply = "Valo";
-}
-else if(t.includes("pore kotha")){
-    reply = "okk";
-}
-else if(t.includes("khaicho")){
-    reply = "Ami Ai ami khaina ";
-}
-else if(t.includes("baneyache")){
-    reply = "Amake banaise Shahriar Foysal Sad";
-}
-else if(t.includes("Kamon")){
-    reply = "Valo achi tumi kemon acho";
-}
-else if(t.includes("obostha")){
-    reply = "aei to valoi";
-}
-else if(t.includes("Accha")){
-    reply = "Hmm";
-}
-else if(t.includes("thako ")){
-    reply = "Ami online a thaki";
-}
-else if(t.includes("paro")){
-    reply = "Ami shudhu kotha bolte pari";
-}
-else if(t.includes("mane")){
-    reply = "SFS mane Shahriar Foysal Sad.Tobe aro onno kisuo hoi";
-}
-else if(t.includes("boios")){
-    reply = "Amr boios nai ami ekjon AI";
-}
-else if(t.includes("manus")){
-    reply = "Na ami AI";
-}
-else if(t.includes("desh")){
-    reply = "Bangladesh";
-}
-else if(t.includes("country")){
-    reply = "Bangladesh";
-}
-else if(t.includes("Thanks")){
-    reply = "Welcome";
+function aspect(){
+ const r=val('ratio');
+ if(r==='original' && img) return img.naturalWidth/img.naturalHeight;
+ const map={'1:1':1,'4:5':4/5,'3:4':3/4,'9:16':9/16,'16:9':16/9,'4:3':4/3};
+ return map[r]||1;
 }
 
-else if(t.includes("kamon")){
-    reply = "Valo ";
-}
-else if(t.includes("baniyece")){
-    reply = "Amake banaise Shahriar Foysal Sad";
-}
-else if(t.includes("yes")){
-    reply = "hmm";
-}
-else if(t.includes("Age")){
-    reply = "Ami ekjon AI amr age nai";
-}
-else if(t.includes("date")){
-    reply = "Sorry ami date bolte pari na";
-}
-else if(t.includes("good morning")){
-    reply = "Good morning";
-}
-else if(t.includes("Good night")){
-    reply = "Good night";
-}
-else if(t.includes("Good noon")){
-    reply = "Good noon";
-}
-else if(t.includes("Good evining")){
-    reply = "Good evining";
-}
-else if(t.includes("kortecho")){
-    reply = "Tumar sate online a achi";
-}
-else if(t.includes("suno")){
-    reply = "Hmm bolo";
-}
-else if(t.includes("thak")){
-    reply = "okk";
-}
-else if(t.includes("good night")){
-    reply = "Good night";
+function filterValues(){
+ const b=num('brightness')/100;
+ const c=num('contrast')/100;
+ const s=num('saturation')/100;
+ const gray=num('gray')/100;
+ let warm=num('warmth');
+ const presets={
+  none:{b:1,c:1,s:1,w:0,g:0},
+  vivid:{b:1.04,c:1.12,s:1.35,w:0,g:0},
+  warm:{b:1.03,c:1.04,s:1.12,w:20,g:0},
+  cool:{b:1,c:1.08,s:1.1,w:-25,g:0},
+  vintage:{b:1.03,c:.92,s:.78,w:18,g:0},
+  mono:{b:1,c:1.1,s:0,w:0,g:0},
+  fade:{b:1.08,c:.8,s:.82,w:4,g:0},
+  dramatic:{b:1,c:1.35,s:1.12,w:-3,g:0},
+  dream:{b:1.12,c:.88,s:1.1,w:8,g:0}
+ };
+ const p=presets[filter]||presets.none;
+ return {
+  b:b*p.b,c:c*p.c,s:s*p.s,
+  w:Math.max(-100,Math.min(100,warm+p.w)),
+  g:Math.max(0,Math.min(1,gray+p.g))
+ };
 }
 
-else if(t.includes("good")){
-    reply = "Thanks";
-}
-else if(t.includes("Khaiso")){
-    reply = "Na Ami AI ami khaina";
-}
-else if(t.includes("tarik")){
-    reply ="Ami tarik bolte pari na"
-}
-else if(t.includes("kmn")){
-    reply ="Ami valo achi tumi kmon acho"
-}
-else if(t.includes("kamon")){
-    reply ="Ami valo achi tumi kmn acho"
-}
-else if(t.includes("age")){
-    reply ="Ami manus noi ami Ai tai amr age nai"
-}
-else if(t.includes("khaiso")){
-    reply ="Ami khaina to ami AI"
-}
-else if(t.includes("gan")){
-    reply ="Ami gan bulte pari na"
-}
-else if(t.includes("kisui")){
-    reply ="OKK"
-}
-else if(t.includes("song")){
-    reply ="Ami song bolte pari na"
-}
-else if(t.includes("kn")){
-    reply ="Emni"
-}
-else if(t.includes("Kno")){
-    reply ="Emni tei"
-}
-else if(t.includes("tini")){
-    reply ="Tini 1 jon Bangladeshi"
-}
-else if(t.includes("korteso")){
-    reply ="Ami tumar sate online a achi bolo ki bolbe"
-}
-else if(t.includes("kortecho")){
-    reply ="Ami online achi tumar sate Bolo ki bolbe"
+function transformedSource(){
+ const off=document.createElement('canvas');
+ const octx=off.getContext('2d');
+ const a=((rotation%360)+360)%360;
+ const sideways=a===90||a===270;
+ off.width=sideways?img.naturalHeight:img.naturalWidth;
+ off.height=sideways?img.naturalWidth:img.naturalHeight;
+ octx.translate(off.width/2,off.height/2);
+ octx.rotate(rotation*Math.PI/180);
+ octx.scale(flipX,flipY);
+ octx.drawImage(img,-img.naturalWidth/2,-img.naturalHeight/2);
+ return off;
 }
 
-
-
-
-else if(t=="date"){
-reply=new Date().toLocaleDateString();
-}
-else if(t=="bye"){
-reply="Goodbye! Have a nice day.";
-}
-
-chat.innerHTML += "<div class='bot'><b>TalkBd:</b> "+reply+"</div>";
-
-input.value="";
-chat.scrollTop=chat.scrollHeight;
-
+function roundedRect(c,x,y,w,h,r){
+ r=Math.min(r,w/2,h/2);
+ c.beginPath();
+ c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.quadraticCurveTo(x+w,y,x+w,y+r);
+ c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+ c.lineTo(x+r,y+h);c.quadraticCurveTo(x,y+h,x,y+h-r);
+ c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y);c.closePath();
 }
 
-document.getElementById("msg").addEventListener("keypress",function(e){
-if(e.key==="Enter"){
-send();
+function draw(){
+ updateLabels();
+ if(!img)return;
+ const source=transformedSource();
+ const ratio=aspect();
+ const targetW=source.width, targetH=source.height;
+ let cropW=targetW,cropH=targetH;
+
+ if(val('fit')==='contain'){
+   // Keep the whole photo inside the requested output ratio.
+   if(targetW/targetH>ratio) cropH=targetW/ratio;
+   else cropW=targetH*ratio;
+ }else{
+   if(targetW/targetH>ratio) cropW=targetH*ratio;
+   else cropH=targetW/ratio;
+ }
+ cropW/=num('zoom')/100;
+ cropH/=num('zoom')/100;
+ cropW=Math.min(cropW,targetW);
+ cropH=Math.min(cropH,targetH);
+
+ const maxX=Math.max(0,targetW-cropW);
+ const maxY=Math.max(0,targetH-cropH);
+ const sx=maxX*num('cropX')/100;
+ const sy=maxY*num('cropY')/100;
+
+ let outW=Math.round(cropW),outH=Math.round(cropH);
+ const exp=val('exportSize');
+ if(exp!=='original'){
+   const maxEdge=Number(exp);
+   const scale=maxEdge/Math.max(outW,outH);
+   outW=Math.round(outW*scale);outH=Math.round(outH*scale);
+ }
+ // Keep the editing preview lightweight, while export uses selected resolution.
+ const previewScale=Math.min(1,1400/Math.max(outW,outH));
+ const W=Math.max(1,Math.round(outW*previewScale));
+ const H=Math.max(1,Math.round(outH*previewScale));
+ canvas.width=W;canvas.height=H;
+
+ ctx.save();
+ ctx.clearRect(0,0,W,H);
+ ctx.fillStyle=val('bgColor');
+ ctx.fillRect(0,0,W,H);
+
+ const f=filterValues();
+ const blur=num('blur')*previewScale;
+ ctx.filter=`brightness(${f.b*100}%) contrast(${f.c*100}%) saturate(${f.s*100}%) grayscale(${f.g*100}%) blur(${blur}px)`;
+
+ // Slight warmth tint overlay after photo render.
+ const rad=num('borderWidth')*previewScale;
+ const r=num('radius')*previewScale;
+ const inset=rad;
+ const dw=W-inset*2,dh=H-inset*2;
+ if(dw>0&&dh>0){
+  ctx.save();
+  roundedRect(ctx,inset,inset,dw,dh,r);
+  ctx.clip();
+  ctx.drawImage(source,sx,sy,cropW,cropH,inset,inset,dw,dh);
+  ctx.restore();
+ }
+ ctx.filter='none';
+
+ if(f.w!==0){
+   ctx.save();
+   ctx.globalAlpha=Math.abs(f.w)/400;
+   ctx.fillStyle=f.w>0?'#ff9a45':'#459cff';
+   ctx.fillRect(0,0,W,H);
+   ctx.restore();
+ }
+
+ // Border frame
+ const bw=num('borderWidth')*previewScale;
+ if(bw>0){
+   ctx.save();ctx.strokeStyle=val('borderColor');ctx.lineWidth=bw;
+   roundedRect(ctx,bw/2,bw/2,W-bw,H-bw,num('radius')*previewScale);
+   ctx.stroke();ctx.restore();
+ }
+
+ // Text overlay
+ const text=val('text').trim();
+ if(text){
+   const size=num('textSize')*previewScale;
+   ctx.save();
+   ctx.font=`bold ${size}px ${val('font')}`;
+   ctx.textAlign='center';ctx.textBaseline='middle';
+   let x=W/2,y=H*.9;
+   if(val('textPosition')==='top')y=H*.1;
+   if(val('textPosition')==='center')y=H/2;
+   if(val('textPosition')==='left'){x=W*.25;y=H*.9}
+   if(val('textPosition')==='right'){x=W*.75;y=H*.9}
+   if($('textShadow').checked){
+     ctx.shadowColor='rgba(0,0,0,.85)';
+     ctx.shadowBlur=5*previewScale;
+     ctx.shadowOffsetX=2*previewScale;
+     ctx.shadowOffsetY=2*previewScale;
+   }
+   ctx.fillStyle=val('textColor');
+   ctx.fillText(text,x,y,W*.9);
+   ctx.restore();
+ }
+ ctx.restore();
 }
+
+function scheduleDraw(){
+ clearTimeout(renderTimer);
+ renderTimer=setTimeout(draw,20);
+}
+
+$('upload').addEventListener('change',e=>{
+ const file=e.target.files[0];
+ if(!file)return;
+ if(!file.type.startsWith('image/')){
+  setStatus('Please choose an image file.');return;
+ }
+ const url=URL.createObjectURL(file);
+ const newImg=new Image();
+ newImg.onload=()=>{
+  if(img&&img.src.startsWith('blob:'))URL.revokeObjectURL(img.src);
+  img=newImg;
+  imageName=file.name.replace(/\.[^.]+$/,'')||'SFS-PicBD';
+  $('empty').classList.add('hidden');
+  canvas.classList.remove('hidden');
+  $('imageInfo').textContent=img.naturalWidth+' × '+img.naturalHeight;
+  resetAll(false);
+  setStatus('Photo ready. Choose a tool and start editing.');
+  URL.revokeObjectURL(url);
+ };
+ newImg.onerror=()=>{
+  URL.revokeObjectURL(url);setStatus('Unable to load this image.');
+ };
+ newImg.src=url;
 });
 
-</script>
+document.querySelectorAll('[data-tab]').forEach(button=>{
+ button.addEventListener('click',()=>{
+  document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b===button));
+  document.querySelectorAll('[data-panel]').forEach(p=>p.classList.toggle('hidden',p.dataset.panel!==button.dataset.tab));
+ });
+});
 
+ids.forEach(id=>{
+ const el=$(id);
+ if(!el)return;
+ el.addEventListener('input',scheduleDraw);
+ el.addEventListener('change',scheduleDraw);
+});
+
+document.querySelectorAll('[data-filter]').forEach(button=>{
+ button.onclick=()=>{
+  filter=button.dataset.filter;
+  document.querySelectorAll('[data-filter]').forEach(b=>b.classList.toggle('active',b===button));
+  draw();
+ };
+});
+
+function resetAll(showMessage=true){
+ Object.entries(defaults).forEach(([id,value])=>{
+  if($(id).type==='checkbox')$(id).checked=value;
+  else $(id).value=value;
+ });
+ rotation=0;flipX=1;flipY=1;filter='none';
+ document.querySelectorAll('[data-filter]').forEach(b=>b.classList.toggle('active',b.dataset.filter==='none'));
+ draw();
+ if(showMessage)setStatus('All edits have been reset.');
+}
+$('undo').onclick=()=>resetAll();
+$('resetEdits').onclick=()=>resetAll();
+$('cropReset').onclick=()=>{
+ $('ratio').value='original';$('cropX').value=50;$('cropY').value=50;$('zoom').value=100;draw();
+};
+$('adjustReset').onclick=()=>{
+ ['brightness','contrast','saturation','warmth','blur','gray'].forEach(id=>$(id).value=defaults[id]);
+ draw();
+};
+$('resetTransform').onclick=()=>{
+ rotation=0;flipX=1;flipY=1;$('rotation').value=0;draw();
+};
+$('resetBorder').onclick=()=>{
+ $('borderWidth').value=0;$('radius').value=0;draw();
+};
+$('rotateLeft').onclick=()=>{rotation-=90;$('rotation').value=rotation;draw()};
+$('rotateRight').onclick=()=>{rotation+=90;$('rotation').value=rotation;draw()};
+$('turnL').onclick=()=>{rotation-=90;$('rotation').value=rotation;draw()};
+$('turnR').onclick=()=>{rotation+=90;$('rotation').value=rotation;draw()};
+$('flipH').onclick=()=>{flipX*=-1;draw()};
+$('flipV').onclick=()=>{flipY*=-1;draw()};
+$('clearText').onclick=()=>{$('text').value='';draw()};
+
+$('save').onclick=savePhoto;
+$('saveTop').onclick=savePhoto;
+$('saveBottom').onclick=savePhoto;
+
+function savePhoto(){
+ if(!img){setStatus('Upload a photo before saving.');return}
+ // Re-render at full export resolution instead of the preview size.
+ const source=transformedSource();
+ const ratio=aspect();
+ let cropW=source.width,cropH=source.height;
+ if(val('fit')==='contain'){
+  if(source.width/source.height>ratio)cropH=source.width/ratio;
+  else cropW=source.height*ratio;
+ }else{
+  if(source.width/source.height>ratio)cropW=source.height*ratio;
+  else cropH=source.width/ratio;
+ }
+ cropW=Math.min(source.width,cropW/(num('zoom')/100));
+ cropH=Math.min(source.height,cropH/(num('zoom')/100));
+ const sx=(source.width-cropW)*num('cropX')/100;
+ const sy=(source.height-cropH)*num('cropY')/100;
+ let w=Math.max(1,Math.round(cropW)),h=Math.max(1,Math.round(cropH));
+ if(val('exportSize')!=='original'){
+  const max=Number(val('exportSize')),scale=max/Math.max(w,h);
+  w=Math.round(w*scale);h=Math.round(h*scale);
+ }
+ const out=document.createElement('canvas');out.width=w;out.height=h;
+ const c=out.getContext('2d');
+ c.fillStyle=val('bgColor');c.fillRect(0,0,w,h);
+ const f=filterValues();
+ c.filter=`brightness(${f.b*100}%) contrast(${f.c*100}%) saturate(${f.s*100}%) grayscale(${f.g*100}%) blur(${num('blur')}px)`;
+ c.drawImage(source,sx,sy,cropW,cropH,0,0,w,h);
+ c.filter='none';
+ if(f.w!==0){
+  c.globalAlpha=Math.abs(f.w)/400;c.fillStyle=f.w>0?'#ff9a45':'#459cff';
+  c.fillRect(0,0,w,h);c.globalAlpha=1;
+ }
+ const bw=num('borderWidth');
+ if(bw>0){
+  c.lineWidth=bw;c.strokeStyle=val('borderColor');
+  roundedRect(c,bw/2,bw/2,w-bw,h-bw,num('radius'));
+  c.stroke();
+ }
+ const text=val('text').trim();
+ if(text){
+  const size=num('textSize');
+  c.font=`bold ${size}px ${val('font')}`;
+  c.textAlign='center';c.textBaseline='middle';
+  let x=w/2,y=h*.9;
+  if(val('textPosition')==='top')y=h*.1;
+  if(val('textPosition')==='center')y=h/2;
+  if(val('textPosition')==='left'){x=w*.25;y=h*.9}
+  if(val('textPosition')==='right'){x=w*.75;y=h*.9}
+  if($('textShadow').checked){c.shadowColor='rgba(0,0,0,.85)';c.shadowBlur=5;c.shadowOffsetX=2;c.shadowOffsetY=2}
+  c.fillStyle=val('textColor');c.fillText(text,x,y,w*.9);
+ }
+ const type=val('format');
+ out.toBlob(blob=>{
+  if(!blob){setStatus('Could not create the image. Try PNG format.');return}
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=imageName+'-SFS-PicBD.'+(type==='image/jpeg'?'jpg':'png');
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),3000);
+  setStatus('Your edited photo has been downloaded.');
+ },type,type==='image/jpeg'?.94:undefined);
+}
+
+updateLabels();
+</script>
 </body>
 </html>
