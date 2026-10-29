@@ -9,299 +9,345 @@
     href="4fae10a7-0439-41e3-97ae-6c8865f118c3.jpg">
     <meta name="theme-color" content="#0b1020">
 
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#10172b">
-<meta name="description" content="SFS QR - Create, save and share QR codes">
-<link rel="icon" href="4fae10a7-0439-41e3-97ae-6c8865f118c3.jpg" type="image/jpg+xml">
-<link rel="manifest" href="4fae10a7-0439-41e3-97ae-6c8865f118c3.jpg">
-<title>SFS QR</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#081226">
+<title>SFS QR - QR Code Creator</title>
+<link rel="icon" href="4fae10a7-0439-41e3-97ae-6c8865f118c3.jpg">
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#0b1020;color:#f4f7ff;font-family:Arial,sans-serif}
-header{padding:17px 20px;background:#111a30;border-bottom:1px solid #293651;position:sticky;top:0;z-index:5}
-.brand{font-size:25px;font-weight:900;color:#65e0ff}
-.brand span{color:white}
-main{max-width:850px;margin:auto;padding:20px 14px}
-.hero{text-align:center;padding:20px 0}
-.logo{width:70px;height:70px;border-radius:22px;background:linear-gradient(135deg,#65e0ff,#7865ff);color:#10172b;font-size:25px;font-weight:bold;display:grid;place-items:center;margin:auto}
-h1{font-size:34px;margin:14px 0 8px}
-p{color:#aab7d1;line-height:1.6}
-.card{background:#121b30;border:1px solid #293650;border-radius:18px;padding:20px;margin:18px 0}
-h2{font-size:20px;margin:0 0 15px}
-label{display:block;font-size:14px;margin:14px 0 7px}
-input,textarea{width:100%;padding:13px;border-radius:10px;border:1px solid #354461;background:#0b1326;color:white;font:inherit}
-textarea{min-height:90px;resize:vertical}
-button{border:0;border-radius:11px;padding:13px 16px;font-weight:bold;cursor:pointer;background:#65e0ff;color:#071323}
-.secondary{background:#293650;color:white}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-.actions button{flex:1;min-width:130px}
-#qr{background:white;display:inline-flex;align-items:center;justify-content:center;padding:12px;border-radius:12px;margin:15px auto;min-height:200px;min-width:200px}
-#qr img,#qr canvas{max-width:100%;height:auto}
-.center{text-align:center}
-.hidden{display:none!important}
-.small{font-size:12px;color:#aab7d1}
-.detail{padding:12px 0;border-bottom:1px solid #293650;overflow-wrap:anywhere;line-height:1.6}
-.detail b{display:block;color:#65e0ff;font-size:13px;margin-bottom:5px}
-.detail a{color:#65e0ff}
-#status{font-size:13px;color:#72efc1;margin-top:12px}
-footer{text-align:center;color:#8492ac;font-size:12px;padding:20px}
-@media(min-width:680px){.columns{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}}
+body{
+ margin:0;padding:20px;font-family:Arial,sans-serif;
+ background:linear-gradient(145deg,#061020,#15274a);
+ color:#fff;min-height:100vh
+}
+.container{max-width:520px;margin:auto}
+header{text-align:center;padding:12px 0 20px}
+.logo{
+ width:70px;height:70px;display:flex;align-items:center;
+ justify-content:center;margin:auto;border-radius:20px;
+ font-size:27px;font-weight:bold;color:white;
+ background:linear-gradient(135deg,#00d9ff,#713cff);
+ box-shadow:0 0 25px #00d9ff44
+}
+h1{color:#3bdcff;margin-bottom:5px}
+.subtitle{color:#b9c9e0;font-size:14px}
+.card{
+ background:#111e35;border:1px solid #2a4265;
+ padding:20px;border-radius:20px;margin-bottom:18px
+}
+label{display:block;margin:14px 0 7px;font-size:14px}
+input,textarea{
+ width:100%;padding:13px;border-radius:10px;
+ border:1px solid #354c6d;background:#081226;
+ color:white;font-size:16px;outline:none
+}
+textarea{resize:vertical;min-height:90px}
+input:focus,textarea:focus{border-color:#28d8ff}
+button{
+ width:100%;padding:14px;margin-top:12px;
+ border:0;border-radius:12px;font-size:15px;
+ font-weight:bold;cursor:pointer
+}
+.primary{
+ background:linear-gradient(90deg,#00d9ff,#6875ff);
+ color:#071226
+}
+.secondary{background:#243957;color:white}
+#result{text-align:center;display:none}
+#qrArea{
+ display:inline-block;background:white;padding:12px;
+ border-radius:10px;margin:15px auto;max-width:100%
+}
+#qrArea canvas,#qrArea img{
+ display:block;max-width:100%;height:auto
+}
+#status{color:#9ceaff;font-size:13px;line-height:1.6}
+#details{display:none;overflow-wrap:anywhere}
+#details a{color:#43dfff}
+.footer{text-align:center;color:#8fa4c2;font-size:12px;padding:15px}
 </style>
 </head>
+
 <body>
+<div class="container">
 
-<header><div class="brand">SFS <span>QR</span></div></header>
-
-<main>
-<section class="hero">
+<header>
  <div class="logo">SFS</div>
  <h1>SFS QR</h1>
- <p>Create QR codes, save them to your phone, and share your details.</p>
+ <div class="subtitle">Create • Scan • Save your QR code</div>
+</header>
+
+<section class="card" id="formCard">
+ <label for="name">Name</label>
+ <input id="name" placeholder="Enter your name">
+
+ <label for="address">Address</label>
+ <input id="address" placeholder="Enter your address">
+
+ <label for="link">Website / Profile Link</label>
+ <input id="link" type="url" placeholder="https://example.com">
+
+ <label for="description">Description</label>
+ <textarea id="description" placeholder="Write details here"></textarea>
+
+ <button class="primary" onclick="generateQR()">Generate QR Code</button>
 </section>
 
-<section class="card" id="creator">
-<h2>✦ Enter Your Details</h2>
 
-<label for="name">Name</label>
-<input id="name" placeholder="Enter name">
+<button class="secondary" onclick="clearQR()">🗑️ Clear All</button>
 
-<label for="address">Address</label>
-<input id="address" placeholder="Enter address">
 
-<label for="link">Website / Link</label>
-<input id="link" type="url" placeholder="https://example.com">
+<section class="card" id="result">
+ <h2>Your QR Code</h2>
+ <div id="qrArea"></div>
 
-<label for="description">Description</label>
-<textarea id="description" placeholder="Write your details"></textarea>
+ <button class="primary" onclick="saveQRToGallery()">
+  📷 Save to Gallery (JPG)
+ </button>
 
-<label for="photo">Profile Picture (optional)</label>
-<input id="photo" type="file" accept="image/*">
-<p class="small">The selected photo is included in this QR's saved data when possible. Large images may make the QR difficult to scan. For reliable sharing, use a publicly accessible image URL in the link field.</p>
+ <button class="secondary" onclick="shareQR()">
+  Share QR Image
+ </button>
 
-<div class="actions">
- <button onclick="generateQR()">Generate QR Code</button>
- <button class="secondary" onclick="clearAll()">Clear</button>
+ <button class="secondary" onclick="copyQRLink()">
+  Copy QR Link
+ </button>
+
+ <p id="status"></p>
+</section>
+
+<section class="card" id="details">
+ <h2 id="detailName">QR Details</h2>
+ <p id="detailAddress"></p>
+ <p id="detailDescription"></p>
+ <p id="detailLink"></p>
+</section>
+
+<div class="footer">SFS QR • Made with care</div>
 </div>
-<div id="status" role="status"></div>
-</section>
-
-<div class="columns">
-<section class="card center hidden" id="qrCard">
-<h2>Your QR Code</h2>
-<div id="qr"></div>
-<p class="small">Scan with a phone camera to open the QR details.</p>
-<div class="actions">
- <button onclick="saveQR()">⬇ Download QR PNG</button>
- <button class="secondary" onclick="shareQR()">Share QR</button>
-</div>
-<div class="actions">
- <button class="secondary" onclick="copyLink()">Copy QR Link</button>
-</div>
-<p class="small">On Android, the downloaded PNG is usually in Downloads or Gallery. Availability depends on your browser.</p>
-</section>
-
-<section class="card hidden" id="detailsCard">
-<h2>QR Details</h2>
-<div id="details"></div>
-<button class="secondary" style="width:100%;margin-top:18px" onclick="location.href=location.pathname">Create New QR</button>
-</section>
-</div>
-
-<section class="card">
-<h2>📱 Install SFS QR</h2>
-<p class="small">Publish this website using HTTPS, open it in Chrome, tap the three-dot menu and select “Add to Home screen” or “Install app”. Use your own icon.svg file for the app logo.</p>
-</section>
-</main>
-<footer>© <span id="year"></span> SFS QR</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
 <script>
-const $ = id => document.getElementById(id);
-let qrLink = "";
-let qrImageData = "";
-
-$("year").textContent = new Date().getFullYear();
-
-function safeLink(value){
- value = (value || "").trim();
- if(!value) return "";
- try {
-  const u = new URL(value);
-  return ["https:","http:"].includes(u.protocol) ? u.href : "";
- } catch(e){ return ""; }
-}
-
-$("photo").addEventListener("change", function(){
- const file = this.files[0];
- if(!file){qrImageData="";return;}
- if(file.size > 700 * 1024){
-  $("status").textContent = "Choose a picture under 700 KB for better QR scanning.";
-  this.value = "";
-  qrImageData = "";
-  return;
- }
- const reader = new FileReader();
- reader.onload = () => {
-  qrImageData = reader.result;
-  $("status").textContent = "Picture selected.";
- };
- reader.readAsDataURL(file);
-});
+let currentQRLink = "";
 
 function generateQR(){
- if(typeof QRCode === "undefined"){
-  $("status").textContent = "QR library failed to load. Check your internet connection.";
-  return;
- }
-
  const data = {
-  name:$("name").value.trim(),
-  address:$("address").value.trim(),
-  link:safeLink($("link").value),
-  description:$("description").value.trim(),
-  photo:qrImageData
+  name:document.getElementById("name").value.trim(),
+  address:document.getElementById("address").value.trim(),
+  link:document.getElementById("link").value.trim(),
+  description:document.getElementById("description").value.trim()
  };
 
- if(!data.name && !data.address && !data.link && !data.description && !data.photo){
-  $("status").textContent = "Please enter details first.";
+ if(!data.name && !data.address && !data.link && !data.description){
+  alert("Please enter some information first.");
   return;
  }
 
- const encoded = encodeURIComponent(JSON.stringify(data));
- qrLink = location.href.split("?")[0].split("#")[0] + "?data=" + encoded;
-
- $("qr").innerHTML = "";
- try{
-  new QRCode($("qr"),{
-   text:qrLink,
-   width:240,
-   height:240,
-   colorDark:"#10172b",
-   colorLight:"#ffffff",
-   correctLevel:QRCode.CorrectLevel.L
-  });
- }catch(e){
-  $("status").textContent = "QR could not be created. Try shorter details or remove the picture.";
-  return;
+ if(data.link){
+  try{
+   const u = new URL(data.link);
+   if(!["http:","https:"].includes(u.protocol)) throw Error();
+  }catch(e){
+   alert("Enter a valid link starting with https:// or http://");
+   return;
+  }
  }
 
- $("qrCard").classList.remove("hidden");
- $("status").textContent = "QR Code created. You can now save it to your phone.";
- $("qrCard").scrollIntoView({behavior:"smooth",block:"center"});
+ const url = new URL("./index.html",window.location.href);
+ url.searchParams.set("data",JSON.stringify(data));
+ currentQRLink = url.href;
+
+ const area = document.getElementById("qrArea");
+ area.innerHTML = "";
+ document.getElementById("result").style.display = "block";
+
+ new QRCode(area,{
+  text:currentQRLink,
+  width:280,
+  height:280,
+  colorDark:"#081226",
+  colorLight:"#ffffff",
+  correctLevel:QRCode.CorrectLevel.M
+ });
+
+ document.getElementById("status").textContent =
+  "QR code ready. You can save it as a JPG image.";
+
+ document.getElementById("result").scrollIntoView({behavior:"smooth"});
 }
 
-function saveQR(){
- const canvas = $("qr").querySelector("canvas");
- const image = $("qr").querySelector("img");
- let url = "";
+function makeJPG(){
+ return new Promise((resolve,reject)=>{
+  const area = document.getElementById("qrArea");
+  const source = area.querySelector("canvas") || area.querySelector("img");
 
- if(canvas){
-  url = canvas.toDataURL("image/png");
- }else if(image && image.src){
-  url = image.src;
- }else{
-  $("status").textContent = "Generate a QR Code first.";
+  if(!source){
+   reject(new Error("Generate a QR code first."));
+   return;
+  }
+
+  const width = source.naturalWidth || source.width;
+  const height = source.naturalHeight || source.height;
+  const padding = 30;
+  const canvas = document.createElement("canvas");
+
+  canvas.width = width + padding*2;
+  canvas.height = height + padding*2;
+
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.drawImage(source,padding,padding,width,height);
+
+  canvas.toBlob(blob=>{
+   if(blob) resolve(blob);
+   else reject(new Error("JPG creation failed."));
+  },"image/jpeg",0.95);
+ });
+}
+
+async function saveQRToGallery(){
+ if(!currentQRLink){
+  alert("Please generate a QR code first.");
   return;
  }
 
- const a = document.createElement("a");
- a.href = url;
- a.download = "SFS-QR.png";
- document.body.appendChild(a);
- a.click();
- a.remove();
- $("status").textContent = "Download requested. Check your Downloads folder.";
+ const status = document.getElementById("status");
+
+ try{
+  const blob = await makeJPG();
+  const file = new File([blob],"SFS-QR.jpg",{type:"image/jpeg"});
+
+  // Open Android's share sheet where supported.
+  if(navigator.share && navigator.canShare &&
+     navigator.canShare({files:[file]})){
+   await navigator.share({
+    files:[file],
+    title:"SFS QR",
+    text:"SFS QR Code"
+   });
+   status.textContent =
+    "Choose a save option in the share menu if available.";
+  }else{
+   // Browser fallback: save the JPG to Downloads.
+   const objectURL = URL.createObjectURL(blob);
+   const a = document.createElement("a");
+   a.href = objectURL;
+   a.download = "SFS-QR.jpg";
+   document.body.appendChild(a);
+   a.click();
+   a.remove();
+
+   status.textContent =
+    "JPG save started. Check your Downloads folder.";
+   setTimeout(()=>URL.revokeObjectURL(objectURL),60000);
+  }
+ }catch(error){
+  if(error.name==="AbortError"){
+   status.textContent="Save cancelled.";
+  }else{
+   status.textContent="Could not save the JPG. Please try again.";
+  }
+ }
 }
 
 async function shareQR(){
- const canvas = $("qr").querySelector("canvas");
- if(!canvas){$("status").textContent="Generate a QR first.";return;}
- canvas.toBlob(async blob => {
-  if(!blob)return;
-  const file = new File([blob],"SFS-QR.png",{type:"image/png"});
-  try{
-   if(navigator.canShare && navigator.canShare({files:[file]})){
-    await navigator.share({files:[file],title:"SFS QR Code"});
-   }else{
-    saveQR();
-   }
-  }catch(e){
-   if(e.name!=="AbortError") $("status").textContent="Sharing was not available. Try Download QR PNG.";
-  }
- },"image/png");
-}
+ if(!currentQRLink){
+  alert("Generate a QR code first.");
+  return;
+ }
 
-async function copyLink(){
- if(!qrLink)return;
  try{
-  await navigator.clipboard.writeText(qrLink);
-  $("status").textContent="QR link copied.";
- }catch(e){
-  prompt("Copy your QR link:",qrLink);
+  const blob = await makeJPG();
+  const file = new File([blob],"SFS-QR.jpg",{type:"image/jpeg"});
+
+  if(navigator.share && navigator.canShare &&
+     navigator.canShare({files:[file]})){
+   await navigator.share({files:[file],title:"SFS QR"});
+  }else{
+   await copyQRLink();
+  }
+ }catch(error){
+  if(error.name!=="AbortError") alert("Unable to share QR image.");
  }
 }
 
-function addDetail(label,value,isLink){
- if(!value)return;
- const row=document.createElement("div");
- row.className="detail";
- const b=document.createElement("b");
- b.textContent=label;
- const content=document.createElement("div");
- if(isLink){
-  const a=document.createElement("a");
-  a.href=value;
-  a.target="_blank";
-  a.rel="noopener noreferrer";
-  a.textContent=value;
-  content.appendChild(a);
- }else{
-  content.textContent=value;
+async function copyQRLink(){
+ if(!currentQRLink){
+  alert("Generate a QR code first.");
+  return;
  }
- row.append(b,content);
- $("details").appendChild(row);
-}
 
-function showDetails(d){
- $("creator").classList.add("hidden");
- $("qrCard").classList.add("hidden");
- $("detailsCard").classList.remove("hidden");
- $("details").innerHTML="";
-
- if(d.photo && typeof d.photo==="string" && d.photo.startsWith("data:image/")){
-  const img=document.createElement("img");
-  img.src=d.photo;
-  img.alt="Profile picture";
-  img.style.cssText="width:110px;height:110px;object-fit:cover;border-radius:50%;display:block;margin:12px auto";
-  $("details").appendChild(img);
+ try{
+  await navigator.clipboard.writeText(currentQRLink);
+  alert("QR link copied successfully!");
+ }catch(error){
+  prompt("Copy your QR link:",currentQRLink);
  }
- addDetail("Name",d.name);
- addDetail("Address",d.address);
- addDetail("Website",safeLink(d.link),true);
- addDetail("Description",d.description);
 }
 
-function clearAll(){
- ["name","address","link","description","photo"].forEach(id=>$(id).value="");
- qrImageData="";
- qrLink="";
- $("qr").innerHTML="";
- $("qrCard").classList.add("hidden");
- $("status").textContent="";
+function showDetails(data){
+ document.getElementById("formCard").style.display="none";
+ document.getElementById("result").style.display="none";
+ document.getElementById("details").style.display="block";
+
+ document.getElementById("detailName").textContent=data.name||"QR Details";
+ document.getElementById("detailAddress").textContent=
+  data.address ? "Address: "+data.address : "";
+ document.getElementById("detailDescription").textContent=
+  data.description ? "Description: "+data.description : "";
+
+ const linkArea=document.getElementById("detailLink");
+ linkArea.replaceChildren();
+
+ if(data.link){
+  try{
+   const u=new URL(data.link);
+   if(["http:","https:"].includes(u.protocol)){
+    const a=document.createElement("a");
+    a.href=u.href;
+    a.target="_blank";
+    a.rel="noopener noreferrer";
+    a.textContent="Open Website";
+    linkArea.appendChild(a);
+   }
+  }catch(e){}
+ }
 }
 
-try{
+// Display information when a QR link is opened.
+(function(){
  const raw=new URLSearchParams(location.search).get("data");
- if(raw){
-  const d=JSON.parse(raw);
-  if(d && typeof d==="object" && !Array.isArray(d)) showDetails(d);
- }
-}catch(e){
- $("status").textContent="This QR data is invalid.";
+ if(!raw) return;
+
+ try{
+  const data=JSON.parse(raw);
+  if(data && typeof data==="object") showDetails(data);
+ }catch(e){}
+})();
+
+
+
+
+function clearQR() {
+  document.getElementById("name").value = "";
+  document.getElementById("address").value = "";
+  document.getElementById("link").value = "";
+  document.getElementById("description").value = "";
+
+  document.getElementById("qrArea").innerHTML = "";
+  document.getElementById("result").style.display = "none";
+
+  document.getElementById("status").textContent = "";
+  currentQRLink = "";
 }
+
+
+
+
 </script>
 </body>
 </html>
