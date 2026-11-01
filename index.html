@@ -1,806 +1,883 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 
-    <link rel="icon" type="image/jpg" 
-    href="53fb583d-2d0f-43d1-adef-9ffc5def9211.jpg">
-    <link rel="manifest" 
-    href="53fb583d-2d0f-43d1-adef-9ffc5def9211.jpg">
-    <meta name="theme-color" content="#0b1020">
+
+  <!-- অ্যান্ড্রয়েড ক্রোম ব্রাউজারের জন্য লোগো (JPG ফরম্যাট) -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" sizes="192x192" href="53fb583d-2d0f-43d1-adef-9ffc5def9211.jpg">
+  <link rel="icon" sizes="512x512" href="53fb583d-2d0f-43d1-adef-9ffc5def9211.jpg">
+
+  <!-- আইফোন/অ্যাপল ডিভাইসের জন্য লোগো -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="apple-touch-icon" href="53fb583d-2d0f-43d1-adef-9ffc5def9211.jpg">
+
+  
+  <link rel="icon" type="image/jpg" 
+  href="53fb583d-2d0f-43d1-adef-9ffc5def9211.jpg">
+  <link rel="manifest" 
+  href="53fb583d-2d0f-43d1-adef-9ffc5def9211.jpg">
+  <meta name="theme-color" content="#0b1020">
 
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-<title>YouTalk</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
+<title>YouTalk - Powered by SFS</title>
 
 <style>
-:root{
-  --bg:#f3f5fa;--panel:#fff;--text:#172033;--muted:#758097;
-  --line:#e5e9f1;--primary:#536dfe;--bubble:#edf0ff;
-}
-body.dark{
-  --bg:#101522;--panel:#1b2333;--text:#f3f5fb;--muted:#aab4c7;
-  --line:#303b50;--primary:#8092ff;--bubble:#303c5c;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:Arial,sans-serif;min-height:100dvh;
-}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f4f6fb;--card:#fff;--text:#172033;--muted:#788398;--line:#e8ebf2;--primary:#3867f5;--bubble:#e9efff}
+body.dark{--bg:#101522;--card:#1a2232;--text:#f3f5fa;--muted:#a0abc0;--line:#30394b;--bubble:#293b61}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 button,input,textarea{font:inherit}
-button{cursor:pointer}
-.topbar{
-  height:62px;background:var(--panel);border-bottom:1px solid var(--line);
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 16px;position:sticky;top:0;z-index:10;
-}
-.brand{font-size:22px;font-weight:800;color:var(--primary)}
-.brand small{display:block;font-size:10px;color:var(--muted);font-weight:500}
-.top-actions{display:flex;gap:8px;align-items:center}
-.btn{
-  border:0;border-radius:10px;padding:10px 13px;
-  background:var(--primary);color:white;font-weight:600;
-}
-.btn.secondary{background:var(--bg);color:var(--text);border:1px solid var(--line)}
-.btn.danger{background:#e34c61}
-.icon-btn{
-  border:1px solid var(--line);background:var(--bg);color:var(--text);
-  border-radius:10px;padding:9px 11px;
-}
-#authScreen{
-  max-width:420px;margin:45px auto;padding:22px;
-}
-.panel{
-  background:var(--panel);border:1px solid var(--line);
-  border-radius:17px;padding:20px;
-}
-h2{margin-top:0}
-.field{margin:13px 0}
-.field label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
-.field input,.field textarea,.search-input{
-  width:100%;padding:12px;border:1px solid var(--line);
-  border-radius:10px;background:var(--bg);color:var(--text);outline:none;
-}
-.field textarea{min-height:85px;resize:vertical}
+button{cursor:pointer;border:0}
+#splash{position:fixed;inset:0;background:#fff;color:#172033;z-index:99;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+#splash h1{font-size:38px;color:#3867f5}
+#splash p{letter-spacing:3px;font-size:12px}
+#app{display:none;max-width:1100px;margin:auto;min-height:100vh;background:var(--bg)}
+header{height:65px;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:sticky;top:0;z-index:10}
+.brand h2{font-size:23px;color:var(--primary)}
+.brand small{font-size:9px;letter-spacing:2px;color:var(--muted)}
+.header-actions{display:flex;gap:10px;align-items:center}
+.iconbtn{background:var(--bg);color:var(--text);padding:10px;border-radius:50%;font-size:18px}
+main{padding:18px 15px 85px}
+.page{display:none}
+.page.active{display:block}
+h3{margin-bottom:15px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:15px;margin-bottom:14px}
+input,textarea{width:100%;padding:13px;border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:10px;outline:none;margin:6px 0 12px}
+textarea{resize:vertical;min-height:75px}
+.primary{background:var(--primary);color:#fff;padding:12px 18px;border-radius:10px;font-weight:bold}
+.secondary{background:var(--bg);color:var(--text);padding:11px 15px;border-radius:10px}
 .full{width:100%}
-.switch-text{color:var(--primary);cursor:pointer;text-align:center;margin-top:17px}
-#appScreen{display:none}
-.layout{
-  display:grid;grid-template-columns:320px 1fr;
-  max-width:1150px;margin:18px auto;padding:0 12px;gap:15px;
-  height:calc(100dvh - 98px);
-}
-.sidebar,.chat-panel{
-  background:var(--panel);border:1px solid var(--line);
-  border-radius:16px;overflow:hidden;min-height:0;
-}
-.sidebar{display:flex;flex-direction:column}
-.side-heading{padding:16px;border-bottom:1px solid var(--line)}
-.side-heading h3{margin:0 0 12px}
-.search-input{margin-bottom:10px}
-.user-list{overflow:auto;padding:8px;flex:1}
-.user-item{
-  display:flex;align-items:center;gap:10px;padding:10px;
-  border-radius:12px;cursor:pointer;
-}
-.user-item:hover,.user-item.active{background:var(--bg)}
-.avatar{
-  width:43px;height:43px;border-radius:50%;background:var(--bubble);
-  color:var(--primary);display:flex;align-items:center;justify-content:center;
-  font-weight:800;flex-shrink:0;overflow:hidden;
-}
-.avatar img{width:100%;height:100%;object-fit:cover}
-.user-info{min-width:0;flex:1}
-.user-info strong,.user-info small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.user-info small{color:var(--muted);margin-top:4px}
-.chat-panel{display:flex;flex-direction:column}
-.chat-empty{margin:auto;text-align:center;color:var(--muted);padding:25px}
-.chat-head{
-  padding:12px 15px;border-bottom:1px solid var(--line);
-  display:flex;align-items:center;gap:10px;min-height:65px;
-}
-.chat-head .user-info{flex:1}
-.messages{
-  flex:1;overflow:auto;padding:16px;display:flex;
-  flex-direction:column;gap:9px;overscroll-behavior:contain;
-}
-.msg{
-  max-width:78%;padding:10px 13px;border-radius:15px;
-  background:var(--bubble);align-self:flex-start;
-  overflow-wrap:anywhere;white-space:pre-wrap;
-}
-.msg.mine{background:var(--primary);color:white;align-self:flex-end}
-.msg small{display:block;font-size:10px;opacity:.7;margin-top:5px;text-align:right}
-.composer{
-  padding:10px;border-top:1px solid var(--line);
-  display:flex;gap:8px;background:var(--panel);
-}
-.composer input{
-  min-width:0;flex:1;border:1px solid var(--line);border-radius:22px;
-  padding:12px 15px;background:var(--bg);color:var(--text);outline:none;
-}
-#profileModal{
-  display:none;position:fixed;inset:0;background:#0009;
-  z-index:30;align-items:center;justify-content:center;padding:15px;
-}
-.profile-card{
-  background:var(--panel);border:1px solid var(--line);
-  border-radius:18px;width:100%;max-width:410px;padding:22px;
-  max-height:90dvh;overflow:auto;
-}
-.profile-top{text-align:center}
-.profile-avatar{
-  width:94px;height:94px;border-radius:50%;margin:5px auto 12px;
-  background:var(--bubble);color:var(--primary);font-size:30px;
-  display:flex;align-items:center;justify-content:center;overflow:hidden;
-}
-.profile-avatar img{width:100%;height:100%;object-fit:cover}
-.profile-name{font-size:21px;font-weight:800}
-.profile-username{color:var(--muted);margin-top:5px}
-.profile-bio{padding:12px;background:var(--bg);border-radius:10px;margin:15px 0;white-space:pre-wrap}
-.profile-actions{display:flex;gap:8px;margin-top:14px}
-.profile-actions button{flex:1}
-#notice{font-size:13px;color:#e34c61;min-height:18px;margin-top:8px}
+.muted{color:var(--muted);font-size:13px}
+.auth{max-width:420px;margin:45px auto}
+.auth h2{text-align:center;margin-bottom:20px}
+.auth-switch{text-align:center;margin-top:15px;color:var(--primary);cursor:pointer}
+.user-row{display:flex;align-items:center;gap:12px;padding:12px 5px;border-bottom:1px solid var(--line);cursor:pointer}
+.avatar{width:45px;height:45px;border-radius:50%;object-fit:cover;background:#dce5ff;display:flex;align-items:center;justify-content:center;color:#3158c9;font-weight:bold;flex-shrink:0}
+.user-info{flex:1;min-width:0}
+.user-info strong{display:block}
+.user-info small{color:var(--muted)}
+.dot{width:9px;height:9px;border-radius:50%;background:#22c55e;display:inline-block;margin-right:5px}
+.chat-layout{display:none}
+.chat-top{display:flex;align-items:center;gap:10px;background:var(--card);padding:12px;border-radius:12px;margin-bottom:10px}
+.chat-top .user-info{flex:1}
+#messages{height:55vh;min-height:300px;overflow-y:auto;padding:10px;background:var(--card);border-radius:12px}
+.msg{max-width:78%;width:max-content;padding:10px 12px;margin:8px 0;border-radius:14px;background:var(--bubble);overflow-wrap:anywhere}
+.msg.mine{margin-left:auto;background:var(--primary);color:white}
+.msg small{display:block;font-size:10px;opacity:.75;text-align:right;margin-top:5px}
+.sendbox{display:flex;gap:8px;margin-top:10px}
+.sendbox input{margin:0;flex:1}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(1100px,100%);display:flex;background:var(--card);border-top:1px solid var(--line);z-index:10}
+.bottom-nav button{flex:1;padding:13px 5px;background:transparent;color:var(--muted);font-size:12px}
+.bottom-nav button.active{color:var(--primary);font-weight:bold}
+.bottom-nav span{display:block;font-size:20px;margin-bottom:3px}
+#menu{display:none;position:absolute;right:12px;top:58px;background:var(--card);border:1px solid var(--line);box-shadow:0 5px 20px #0002;border-radius:12px;padding:8px;min-width:150px}
+#menu button{display:block;width:100%;text-align:left;padding:12px;background:transparent;color:var(--text);border-radius:7px}
+#menu button:hover{background:var(--bg)}
+.profile-photo{width:95px;height:95px;border-radius:50%;object-fit:cover;background:#dce5ff}
+.empty{text-align:center;padding:35px 10px;color:var(--muted)}
 .hidden{display:none!important}
-@media(max-width:700px){
-  .layout{display:block;margin:0;padding:0;height:calc(100dvh - 62px)}
-  .sidebar,.chat-panel{border-radius:0;border:0;height:100%}
-  .chat-panel{display:none}
-  .layout.chat-open .sidebar{display:none}
-  .layout.chat-open .chat-panel{display:flex}
-  .topbar{padding:0 10px}
-  .top-actions .btn{padding:9px}
+@media(min-width:750px){
+main{padding:25px}
+#messages{height:58vh}
 }
 </style>
 </head>
 
 <body>
+<div id="splash">
+  <h1>YouTalk</h1>
+  <p>FROM SFS</p>
+  <small>Connecting people...</small>
+</div>
 
-<header class="topbar">
-  <div class="brand">YouTalk <small>Powered by SFS</small></div>
-  <div class="top-actions">
-    <button class="icon-btn" id="themeBtn">☾</button>
-    <button class="btn secondary" id="profileBtn" style="display:none">Profile</button>
-    <button class="btn danger" id="logoutBtn" style="display:none">Logout</button>
+<div id="app">
+<header>
+  <div class="brand">
+    <h2>YouTalk</h2>
+    <small>POWERED BY SFS</small>
+  </div>
+  <div class="header-actions">
+    <button class="iconbtn" id="notificationBtn" title="Notifications">♧</button>
+    <button class="iconbtn" id="menuBtn">⋮</button>
+  </div>
+  <div id="menu">
+    <button id="themeBtn">🌙 Change theme</button>
+    <button id="notificationMenuBtn">🔔 Notifications</button>
+    <button id="logoutBtn">↪ Logout</button>
   </div>
 </header>
 
-<section id="authScreen">
-  <div class="panel">
-    <h2 id="authTitle">Welcome to YouTalk</h2>
-    <p style="color:var(--muted)">Chat privately with people.</p>
-
-    <div id="signupFields" class="hidden">
-      <div class="field">
-        <label>Your name</label>
-        <input id="signupName" placeholder="Your name">
+<main>
+  <!-- LOGIN / REGISTER -->
+  <section id="authPage" class="page active">
+    <div class="auth card">
+      <h2 id="authTitle">Welcome to YouTalk</h2>
+      <div id="registerFields" class="hidden">
+        <input id="regName" placeholder="Your full name">
+        <input id="regUsername" placeholder="Username (example: sad123)">
       </div>
-      <div class="field">
-        <label>Username (without spaces)</label>
-        <input id="signupUsername" placeholder="example123">
+      <input id="email" type="email" placeholder="Email address">
+      <input id="password" type="password" placeholder="Password">
+      <button class="primary full" id="authSubmit">Login</button>
+      <p class="auth-switch" id="authSwitch">Create a new account</p>
+      <p class="muted" id="authMessage" style="text-align:center;margin-top:12px"></p>
+    </div>
+  </section>
+
+  <!-- HOME -->
+  <section id="homePage" class="page">
+    <h>Message</h2>
+    <div class="card">
+      <input id="searchInput" placeholder="Search by name or username...">
+      <div id="searchResults"><p class="muted">Search for YouTalk users.</p></div>
+    </div>
+  </section>
+
+  <!-- CHATS -->
+  <section id="chatsPage" class="page">
+    <div id="chatListArea">
+      <h3>Your Chats</h3>
+      <div class="card" id="chatList">
+        <p class="empty">Your chats will appear here.</p>
       </div>
     </div>
 
-    <div class="field">
-      <label>Email</label>
-      <input id="email" type="email" placeholder="Enter your email">
-    </div>
-    <div class="field">
-      <label>Password</label>
-      <input id="password" type="password" placeholder="Enter password">
-    </div>
-
-    <button class="btn full" id="authSubmit">Login</button>
-    <div class="switch-text" id="authSwitch">New to YouTalk? Create Account</div>
-    <div id="authError"></div>
-  </div>
-</section>
-
-<section id="appScreen">
-  <div class="layout" id="layout">
-    <aside class="sidebar">
-      <div class="side-heading">
-        <h3>Messages</h3>
-        <input class="search-input" id="searchInput" placeholder="Search username...">
-        <div style="font-size:12px;color:var(--muted)">Search people to view their profile or chat.</div>
+    <div id="chatArea" class="chat-layout">
+      <div class="chat-top">
+        <button class="secondary" id="backChats">←</button>
+        <div class="avatar" id="chatAvatar">Y</div>
+        <div class="user-info">
+          <strong id="chatName">User</strong>
+          <small id="chatPresence">Offline</small>
+        </div>
       </div>
-      <div class="user-list" id="userList">
-        <p style="color:var(--muted);padding:12px">Your chats will appear here.</p>
+
+      <div id="messages">
+        <p class="empty">Start a conversation.</p>
       </div>
-    </aside>
 
-    <main class="chat-panel" id="chatPanel">
-      <div class="chat-empty">Select a person to start chatting.</div>
-    </main>
-  </div>
-</section>
-
-<div id="profileModal">
-  <div class="profile-card">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <h2 id="profileTitle">Profile</h2>
-      <button class="icon-btn" id="closeProfile">✕</button>
+      <form class="sendbox" id="sendForm">
+        <input id="messageInput" placeholder="Write a message..." autocomplete="off">
+        <button class="primary" type="submit">➤</button>
+      </form>
+      <p class="muted" style="margin-top:7px">Messages are visible to members of this chat.</p>
     </div>
+  </section>
 
-    <div class="profile-top">
-      <div class="profile-avatar" id="profileAvatar">U</div>
-      <div class="profile-name" id="profileName"></div>
-      <div class="profile-username" id="profileUsername"></div>
-    </div>
-
-    <div id="profileDetails">
-      <div class="profile-bio" id="profileBio">No bio added yet.</div>
-      <div id="profileEmail" style="font-size:13px;color:var(--muted)"></div>
-    </div>
-
-    <div id="editProfileFields" class="hidden">
-      <div class="field">
-        <label>Name</label>
-        <input id="editName" maxlength="40">
+  <!-- PROFILE -->
+  <section id="profilePage" class="page">
+    <h3>My Profile</h3>
+    <div class="card">
+      <div style="text-align:center;margin-bottom:15px">
+        <img id="profilePhotoPreview" class="profile-photo" src="https://placehold.co/150x150?text=You">
       </div>
-      <div class="field">
-        <label>Bio</label>
-        <textarea id="editBio" maxlength="160" placeholder="Write something about yourself"></textarea>
-      </div>
-      <div class="field">
-        <label>Profile photo URL</label>
-        <input id="editPhoto" type="url" placeholder="https://example.com/photo.jpg">
-      </div>
-      <p style="font-size:12px;color:var(--muted)">Photo URL দিলে ছবিটি Profile-এ দেখা যাবে।</p>
+      <label class="muted">Profile photo URL</label>
+      <input id="profilePhoto" placeholder="Paste an image URL">
+      <label class="muted">Full name</label>
+      <input id="profileName" placeholder="Your name">
+      <label class="muted">Username</label>
+      <input id="profileUsername" placeholder="username">
+      <label class="muted">Bio</label>
+      <textarea id="profileBio" placeholder="Write something about yourself..."></textarea>
+      <button class="primary full" id="saveProfile">Save Profile</button>
+      <p class="muted" id="profileMessage" style="margin-top:10px"></p>
     </div>
+    <div class="card">
+      <strong>Account information</strong>
+      <p class="muted" id="accountEmail" style="margin-top:8px"></p>
+      <p class="muted" id="accountStatus"></p>
+    </div>
+  </section>
+</main>
 
-    <div class="profile-actions">
-      <button class="btn secondary" id="editProfileBtn">Edit Profile</button>
-      <button class="btn" id="saveProfileBtn" style="display:none">Save</button>
-      <button class="btn" id="profileMessageBtn" style="display:none">Message</button>
-    </div>
-    <div id="profileError"></div>
-  </div>
+<nav class="bottom-nav hidden" id="bottomNav">
+  <button data-page="homePage" class="active"><span>⌂</span>Home</button>
+  <button data-page="chatsPage"><span>▤</span>Chats</button>
+  <button data-page="profilePage"><span>◉</span>Profile</button>
+</nav>
 </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import { initializeApp } from
+"https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
 
 import {
-  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  onAuthStateChanged, signOut, deleteUser
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+  setPersistence,
+  browserLocalPersistence
+} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
 
 import {
-  getFirestore, doc, getDoc, setDoc, updateDoc, collection,
-  query, where, orderBy, onSnapshot, addDoc, serverTimestamp,
-  runTransaction, getDocs, limit
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  collection,
+  addDoc,
+  query,
+  where,
+  orderBy,
+  limit,
+  onSnapshot,
+  serverTimestamp,
+  getDocs,
+  runTransaction,
+  arrayUnion
+} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 
-
+/* YOUR FIREBASE CONFIG */
 const firebaseConfig = {
-  apiKey: "AIzaSyDqg_rfJK-rPi4TW-2iO9IgCzNL3VGKqSY",
-  authDomain: "youtalk-5747f.firebaseapp.com",
-  projectId: "youtalk-5747f",
-  storageBucket: "youtalk-5747f.firebasestorage.app",
-  messagingSenderId: "113958544756",
-  appId: "1:113958544756:web:8885b1bb64c7ebbde3b821"
+  apiKey: "AIzaSyAU7kwoN8_o6czOFgSErjdqvu1s5uQbD24",
+  authDomain: "youtalk-ab563.firebaseapp.com",
+  projectId: "youtalk-ab563",
+  storageBucket: "youtalk-ab563.firebasestorage.app",
+  messagingSenderId: "912076753175",
+  appId: "1:912076753175:web:9c03c89c0afbfe47608f52"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+await setPersistence(auth, browserLocalPersistence);
+
+/* APP STATE */
 let currentUser = null;
-let currentProfile = null;
-let activePerson = null;
+let myProfile = null;
 let activeChatId = null;
+let activeOtherUser = null;
 let unsubscribeMessages = null;
 let unsubscribeChats = null;
-let signupMode = false;
-let profileSetupInProgress = false;
-let searchTimer = null;
-let profileTarget = null;
-let editingOwnProfile = false;
+let unsubscribePresence = null;
+let unsubscribeMyProfile = null;
+let authMode = "login";
+let currentPage = "homePage";
 
 const $ = id => document.getElementById(id);
 
-function showError(id, message){
-  $(id).textContent = message || "";
+function showMessage(id, message) {
+  $(id).textContent = message;
 }
 
-function safeText(value){
-  return String(value || "");
+function cleanUsername(value) {
+  return value.trim().toLowerCase().replace(/^@/, "");
 }
 
-function avatarHTML(person){
-  const photo = safeText(person.photoURL);
-  const letter = safeText(person.name || person.username || "U").charAt(0).toUpperCase();
-  if(photo){
-    return `<div class="avatar"><img src="${escapeHTML(photo)}" alt="" onerror="this.parentElement.textContent='${escapeHTML(letter)}'"></div>`;
+function chatIdFor(a, b) {
+  return [a, b].sort().join("_");
+}
+
+function formatTime(timestamp) {
+  if (!timestamp) return "";
+  const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+  return date.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+}
+
+function showPage(page) {
+  currentPage = page;
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  $(page).classList.add("active");
+
+  document.querySelectorAll(".bottom-nav button").forEach(button => {
+    button.classList.toggle("active", button.dataset.page === page);
+  });
+
+  $("menu").style.display = "none";
+
+  if (page !== "chatsPage") closeChat();
+}
+
+function escapeHTML(value = "") {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;"
+  })[char]);
+}
+
+function avatarHTML(profile, size = 45) {
+  const name = profile?.name || "User";
+  const photo = profile?.photoURL || "";
+  if (photo) {
+    return `<img class="avatar" style="width:${size}px;height:${size}px"
+      src="${escapeHTML(photo)}" alt=""
+      onerror="this.style.display='none'">`;
   }
-  return `<div class="avatar">${escapeHTML(letter)}</div>`;
+  return `<div class="avatar" style="width:${size}px;height:${size}px">
+    ${escapeHTML(name.charAt(0).toUpperCase())}
+  </div>`;
 }
 
-function escapeHTML(value){
-  return String(value || "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[c]));
-}
+/* AUTH MODE */
+$("authSwitch").onclick = () => {
+  authMode = authMode === "login" ? "register" : "login";
+  $("registerFields").classList.toggle("hidden", authMode !== "register");
+  $("authTitle").textContent = authMode === "login" ? "Welcome to YouTalk" : "Create Your Account";
+  $("authSubmit").textContent = authMode === "login" ? "Login" : "Create Account";
+  $("authSwitch").textContent = authMode === "login" ? "Create a new account" : "Already have an account? Login";
+  showMessage("authMessage", "");
+};
 
-function formatTime(timestamp){
-  if(!timestamp || !timestamp.toDate) return "";
-  return timestamp.toDate().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
-}
-
-function chatIdFor(uid1, uid2){
-  return [uid1, uid2].sort().join("_");
-}
-
-function toggleTheme(){
-  document.body.classList.toggle("dark");
-  localStorage.setItem("youtalk-theme",
-    document.body.classList.contains("dark") ? "dark" : "light");
-  $("themeBtn").textContent = document.body.classList.contains("dark") ? "☀" : "☾";
-}
-
-if(localStorage.getItem("youtalk-theme") === "dark"){
-  document.body.classList.add("dark");
-  $("themeBtn").textContent = "☀";
-}
-$("themeBtn").addEventListener("click", toggleTheme);
-
-
-function setSignupMode(value){
-  signupMode = value;
-  $("signupFields").classList.toggle("hidden", !signupMode);
-  $("authTitle").textContent = signupMode ? "Create Your Account" : "Welcome to YouTalk";
-  $("authSubmit").textContent = signupMode ? "Create Account" : "Login";
-  $("authSwitch").textContent = signupMode
-    ? "Already have an account? Login"
-    : "New to YouTalk? Create Account";
-  showError("authError", "");
-}
-
-$("authSwitch").addEventListener("click", () => setSignupMode(!signupMode));
-
-$("authSubmit").addEventListener("click", async () => {
-  showError("authError", "");
+/* REGISTER / LOGIN */
+$("authSubmit").onclick = async () => {
   const email = $("email").value.trim();
   const password = $("password").value;
 
-  if(!email || !password){
-    showError("authError", "Email এবং Password দাও।");
+  if (!email || !password) {
+    showMessage("authMessage", "Enter your email and password.");
     return;
   }
 
   $("authSubmit").disabled = true;
+  showMessage("authMessage", "Please wait...");
 
-  try{
-    if(signupMode){
-      const name = $("signupName").value.trim();
-      const username = $("signupUsername").value.trim().toLowerCase();
+  try {
+    if (authMode === "register") {
+      const name = $("regName").value.trim();
+      const username = cleanUsername($("regUsername").value);
 
-      if(!name || !username){
-        throw new Error("Name এবং Username পূরণ করো।");
-      }
-      if(!/^[a-z0-9_]{3,20}$/.test(username)){
-        throw new Error("Username 3-20 অক্ষরের হতে হবে। শুধু a-z, 0-9 ও _ ব্যবহার করো।");
+      if (!name || !/^[a-z0-9_]{3,20}$/.test(username)) {
+        throw new Error("Enter your name and a username (3-20 letters, numbers or _).");
       }
 
-      profileSetupInProgress = true;
       const credential = await createUserWithEmailAndPassword(auth, email, password);
       const uid = credential.user.uid;
 
-      try{
-        await runTransaction(db, async transaction => {
-          const usernameRef = doc(db, "usernames", username);
-          const usernameSnap = await transaction.get(usernameRef);
-          if(usernameSnap.exists()){
-            throw new Error("এই Username আগে থেকেই নেওয়া হয়েছে। অন্য Username দাও।");
-          }
+      await runTransaction(db, async transaction => {
+        const usernameRef = doc(db, "usernames", username);
+        const usernameSnap = await transaction.get(usernameRef);
 
-          transaction.set(usernameRef, {uid, username});
-          transaction.set(doc(db, "users", uid), {
-            uid, name, username, usernameLower:username,
-            email, bio:"", photoURL:"",
-            createdAt:serverTimestamp(),
-            lastSeen:serverTimestamp()
-          });
+        if (usernameSnap.exists()) {
+          throw new Error("This username is already taken. Try another one.");
+        }
+
+        transaction.set(usernameRef, { ownerUid: uid });
+        transaction.set(doc(db, "users", uid), {
+          uid,
+          name,
+          username,
+          bio: "",
+          photoURL: "",
+          online: true,
+          lastSeen: serverTimestamp(),
+          createdAt: serverTimestamp()
         });
+      });
 
-        await startApp(credential.user);
-      }catch(error){
-        try{ await deleteUser(credential.user); }catch(e){}
-        throw error;
-      }finally{
-        profileSetupInProgress = false;
-      }
-
-    }else{
+      showMessage("authMessage", "Account created!");
+    } else {
       await signInWithEmailAndPassword(auth, email, password);
     }
-  }catch(error){
-    showError("authError", friendlyError(error));
-  }finally{
+  } catch (error) {
+    showMessage("authMessage", error.message);
+  } finally {
     $("authSubmit").disabled = false;
   }
-});
+};
 
-function friendlyError(error){
-  const code = error?.code || "";
-  if(code.includes("email-already-in-use")) return "এই Email দিয়ে আগে Account খোলা হয়েছে। Login করো।";
-  if(code.includes("invalid-credential") || code.includes("wrong-password")) return "Email অথবা Password ভুল হয়েছে।";
-  if(code.includes("user-not-found")) return "এই Email দিয়ে Account পাওয়া যায়নি।";
-  if(code.includes("weak-password")) return "Password কমপক্ষে ৬ অক্ষরের দাও।";
-  if(code.includes("permission-denied")) return "Firebase Rules-এ অনুমতি নেই। Firestore Rules পরীক্ষা করো।";
-  if(code.includes("network-request-failed")) return "Internet connection পরীক্ষা করো।";
-  return error?.message || "কিছু সমস্যা হয়েছে। আবার চেষ্টা করো।";
-}
-
-
+/* AUTH SESSION */
 onAuthStateChanged(auth, async user => {
-  if(profileSetupInProgress) return;
-  if(user){
-    await startApp(user);
-  }else{
-    currentUser = null;
-    currentProfile = null;
-    $("authScreen").style.display = "block";
-    $("appScreen").style.display = "none";
-    $("profileBtn").style.display = "none";
-    $("logoutBtn").style.display = "none";
-    if(unsubscribeChats) unsubscribeChats();
-    if(unsubscribeMessages) unsubscribeMessages();
-  }
-});
-
-
-async function startApp(user){
   currentUser = user;
-  const userRef = doc(db, "users", user.uid);
-  const userSnap = await getDoc(userRef);
 
-  if(!userSnap.exists()){
-    showError("authError", "Profile পাওয়া যায়নি। Firebase Console-এ Users collection পরীক্ষা করো।");
+  if (!user) {
+    stopListeners();
+    $("splash").style.display = "none";
+    $("app").style.display = "block";
+    $("authPage").classList.add("active");
+    $("bottomNav").classList.add("hidden");
+    document.querySelectorAll(".page").forEach(p => {
+      if (p.id !== "authPage") p.classList.remove("active");
+    });
     return;
   }
 
-  currentProfile = userSnap.data();
-  await updateDoc(userRef, {lastSeen:serverTimestamp()});
+  try {
+    const profileSnap = await getDoc(doc(db, "users", user.uid));
 
-  $("authScreen").style.display = "none";
-  $("appScreen").style.display = "block";
-  $("profileBtn").style.display = "inline-block";
-  $("logoutBtn").style.display = "inline-block";
+    if (!profileSnap.exists()) {
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        name: user.email.split("@")[0],
+        username: "user_" + user.uid.slice(0, 8),
+        bio: "",
+        photoURL: "",
+        online: true,
+        lastSeen: serverTimestamp(),
+        createdAt: serverTimestamp()
+      });
+    }
 
-  listenChats();
+    await loadMyProfile();
+    await setOnline(true);
+
+    $("splash").style.display = "none";
+    $("app").style.display = "block";
+    $("bottomNav").classList.remove("hidden");
+    showPage("homePage");
+
+    startMyProfileListener();
+    loadChatList();
+    fillProfileForm();
+  } catch (error) {
+    $("splash").style.display = "none";
+    $("app").style.display = "block";
+    alert("Firebase error: " + error.message);
+  }
+});
+
+async function loadMyProfile() {
+  const snap = await getDoc(doc(db, "users", currentUser.uid));
+  myProfile = snap.data();
 }
 
-$("logoutBtn").addEventListener("click", async () => {
-  if(!confirm("Logout করতে চাও?")) return;
-  if(unsubscribeMessages) unsubscribeMessages();
-  if(unsubscribeChats) unsubscribeChats();
-  await signOut(auth);
-});
+function startMyProfileListener() {
+  if (unsubscribeMyProfile) unsubscribeMyProfile();
 
-
-/* Profile features */
-
-function openProfile(person, own = false){
-  profileTarget = person;
-  editingOwnProfile = own;
-
-  $("profileModal").style.display = "flex";
-  $("profileTitle").textContent = own ? "My Profile" : "User Profile";
-  $("profileAvatar").innerHTML = person.photoURL
-    ? `<img src="${escapeHTML(person.photoURL)}" alt="Profile photo">`
-    : escapeHTML((person.name || person.username || "U").charAt(0).toUpperCase());
-
-  $("profileName").textContent = person.name || "User";
-  $("profileUsername").textContent = "@" + (person.username || "");
-  $("profileBio").textContent = person.bio || "No bio added yet.";
-  $("profileEmail").textContent = own ? (person.email || currentUser.email || "") : "";
-
-  $("profileDetails").classList.remove("hidden");
-  $("editProfileFields").classList.add("hidden");
-  $("editProfileBtn").style.display = own ? "block" : "none";
-  $("saveProfileBtn").style.display = "none";
-  $("profileMessageBtn").style.display = own ? "none" : "block";
-  showError("profileError", "");
+  unsubscribeMyProfile = onSnapshot(doc(db, "users", currentUser.uid), snap => {
+    if (snap.exists()) {
+      myProfile = snap.data();
+      fillProfileForm();
+    }
+  });
 }
 
-$("profileBtn").addEventListener("click", () => {
-  if(currentProfile) openProfile(currentProfile, true);
-});
+/* ONLINE / OFFLINE STATUS */
+async function setOnline(isOnline) {
+  if (!currentUser) return;
 
-$("closeProfile").addEventListener("click", () => {
-  $("profileModal").style.display = "none";
-});
-
-$("profileModal").addEventListener("click", e => {
-  if(e.target === $("profileModal")) $("profileModal").style.display = "none";
-});
-
-$("editProfileBtn").addEventListener("click", () => {
-  if(!profileTarget) return;
-  $("editName").value = profileTarget.name || "";
-  $("editBio").value = profileTarget.bio || "";
-  $("editPhoto").value = profileTarget.photoURL || "";
-
-  $("profileDetails").classList.add("hidden");
-  $("editProfileFields").classList.remove("hidden");
-  $("editProfileBtn").style.display = "none";
-  $("saveProfileBtn").style.display = "block";
-});
-
-$("saveProfileBtn").addEventListener("click", async () => {
-  const name = $("editName").value.trim();
-  const bio = $("editBio").value.trim();
-  const photoURL = $("editPhoto").value.trim();
-
-  if(!name){
-    showError("profileError", "Name খালি রাখা যাবে না।");
-    return;
-  }
-  if(photoURL && !/^https?:\/\//i.test(photoURL)){
-    showError("profileError", "Photo URL অবশ্যই http:// অথবা https:// দিয়ে শুরু হতে হবে।");
-    return;
-  }
-
-  $("saveProfileBtn").disabled = true;
-  try{
+  try {
     await updateDoc(doc(db, "users", currentUser.uid), {
-      name, bio, photoURL
+      online: isOnline,
+      lastSeen: serverTimestamp()
+    });
+  } catch (error) {
+    console.log("Presence update:", error.message);
+  }
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (!currentUser) return;
+  setOnline(!document.hidden);
+});
+
+window.addEventListener("pagehide", () => {
+  if (currentUser) setOnline(false);
+});
+
+window.addEventListener("beforeunload", () => {
+  if (currentUser) setOnline(false);
+});
+
+/* PROFILE */
+function fillProfileForm() {
+  if (!myProfile) return;
+
+  $("profileName").value = myProfile.name || "";
+  $("profileUsername").value = myProfile.username || "";
+  $("profileBio").value = myProfile.bio || "";
+  $("profilePhoto").value = myProfile.photoURL || "";
+  $("profilePhotoPreview").src = myProfile.photoURL || "https://placehold.co/150x150?text=You";
+  $("accountEmail").textContent = currentUser?.email || "";
+  $("accountStatus").textContent = myProfile.online ? "Online" : "Offline";
+}
+
+$("profilePhoto").addEventListener("input", () => {
+  $("profilePhotoPreview").src = $("profilePhoto").value || "https://placehold.co/150x150?text=You";
+});
+
+$("saveProfile").onclick = async () => {
+  if (!currentUser) return;
+
+  const name = $("profileName").value.trim();
+  const username = cleanUsername($("profileUsername").value);
+  const bio = $("profileBio").value.trim();
+  const photoURL = $("profilePhoto").value.trim();
+
+  if (!name || !/^[a-z0-9_]{3,20}$/.test(username)) {
+    showMessage("profileMessage", "Enter a valid name and username.");
+    return;
+  }
+
+  try {
+    const oldUsername = myProfile.username;
+    await runTransaction(db, async transaction => {
+      const newRef = doc(db, "usernames", username);
+      const oldRef = doc(db, "usernames", oldUsername);
+      const newSnap = await transaction.get(newRef);
+
+      if (username !== oldUsername && newSnap.exists()) {
+        throw new Error("This username is already taken.");
+      }
+
+      if (username !== oldUsername) {
+        transaction.delete(oldRef);
+        transaction.set(newRef, {ownerUid: currentUser.uid});
+      }
+
+      transaction.update(doc(db, "users", currentUser.uid), {
+        name, username, bio, photoURL
+      });
     });
 
-    currentProfile = {...currentProfile, name, bio, photoURL};
-    openProfile(currentProfile, true);
-    listenChats();
-  }catch(error){
-    showError("profileError", friendlyError(error));
-  }finally{
-    $("saveProfileBtn").disabled = false;
+    await loadMyProfile();
+    fillProfileForm();
+    showMessage("profileMessage", "Profile updated successfully!");
+  } catch (error) {
+    showMessage("profileMessage", error.message);
   }
-});
+};
 
-$("profileMessageBtn").addEventListener("click", () => {
-  if(profileTarget){
-    const person = profileTarget;
-    $("profileModal").style.display = "none";
-    openChat(person);
-  }
-});
-
-
-/* Search users */
+/* USER SEARCH */
+let searchTimer;
 
 $("searchInput").addEventListener("input", () => {
   clearTimeout(searchTimer);
-  const value = $("searchInput").value.trim().toLowerCase();
-  searchTimer = setTimeout(() => searchUsers(value), 350);
+  searchTimer = setTimeout(searchUsers, 400);
 });
 
-async function searchUsers(value){
-  if(!value){
-    listenChats();
-    return;
-  }
-  if(value.length < 2) return;
+async function searchUsers() {
+  const term = $("searchInput").value.trim().toLowerCase();
+  const area = $("searchResults");
 
-  try{
-    const usersRef = collection(db, "users");
-    const q = query(
-      usersRef,
-      orderBy("usernameLower"),
-      where("usernameLower", ">=", value),
-      where("usernameLower", "<=", value + "\uf8ff"),
-      limit(15)
-    );
-
-    const snap = await getDocs(q);
-    const people = snap.docs
-      .map(d => d.data())
-      .filter(person => person.uid !== currentUser.uid);
-
-    renderPeople(people);
-  }catch(error){
-    $("userList").textContent = "Search error: " + friendlyError(error);
-  }
-}
-
-function renderPeople(people){
-  const list = $("userList");
-  list.innerHTML = "";
-
-  if(!people.length){
-    list.innerHTML = '<p style="padding:12px;color:var(--muted)">কোনো User পাওয়া যায়নি।</p>';
+  if (term.length < 2) {
+    area.innerHTML = '<p class="muted">Type at least 2 characters.</p>';
     return;
   }
 
-  people.forEach(person => {
-    const item = document.createElement("div");
-    item.className = "user-item";
-    item.innerHTML = `
-      ${avatarHTML(person)}
-      <div class="user-info">
-        <strong>${escapeHTML(person.name || "User")}</strong>
-        <small>@${escapeHTML(person.username || "")}</small>
-      </div>
-      <button class="icon-btn profile-open">Profile</button>
-    `;
-    item.querySelector(".profile-open").addEventListener("click", e => {
-      e.stopPropagation();
-      openProfile(person, false);
+  area.innerHTML = '<p class="muted">Searching...</p>';
+
+  try {
+    const usersSnap = await getDocs(query(collection(db, "users"), limit(100)));
+    const matches = [];
+
+    usersSnap.forEach(item => {
+      const data = item.data();
+      if (data.uid !== currentUser.uid &&
+          ((data.name || "").toLowerCase().includes(term) ||
+           (data.username || "").toLowerCase().includes(term))) {
+        matches.push(data);
+      }
     });
-    item.addEventListener("click", () => openChat(person));
-    list.appendChild(item);
-  });
+
+    if (!matches.length) {
+      area.innerHTML = '<p class="empty">No users found.</p>';
+      return;
+    }
+
+    area.innerHTML = matches.map(user => `
+      <div class="user-row" data-uid="${escapeHTML(user.uid)}">
+        ${avatarHTML(user)}
+        <div class="user-info">
+          <strong>${escapeHTML(user.name)}</strong>
+          <small>@${escapeHTML(user.username || "")}</small>
+        </div>
+        <span class="muted">Chat →</span>
+      </div>
+    `).join("");
+
+    area.querySelectorAll(".user-row").forEach(row => {
+      row.onclick = () => openChat(matches.find(u => u.uid === row.dataset.uid));
+    });
+  } catch (error) {
+    area.innerHTML = `<p class="muted">${escapeHTML(error.message)}</p>`;
+  }
 }
 
-
-/* Chat list */
-
-function listenChats(){
-  if(!currentUser) return;
-  if(unsubscribeChats) unsubscribeChats();
+/* CHAT LIST */
+function loadChatList() {
+  if (unsubscribeChats) unsubscribeChats();
 
   const q = query(
     collection(db, "chats"),
-    where("participants", "array-contains", currentUser.uid)
+    where("members", "array-contains", currentUser.uid)
   );
 
   unsubscribeChats = onSnapshot(q, async snapshot => {
-    const chats = snapshot.docs.map(d => ({id:d.id, ...d.data()}));
-    chats.sort((a,b) => {
-      const ta = a.updatedAt?.toMillis?.() || 0;
-      const tb = b.updatedAt?.toMillis?.() || 0;
-      return tb - ta;
-    });
+    const area = $("chatList");
 
-    const people = [];
-    for(const chat of chats){
-      const otherUid = (chat.participants || []).find(id => id !== currentUser.uid);
-      if(!otherUid) continue;
-      const personSnap = await getDoc(doc(db, "users", otherUid));
-      if(personSnap.exists()){
-        people.push({...personSnap.data(), lastMessage:chat.lastMessage || ""});
-      }
+    if (snapshot.empty) {
+      area.innerHTML = '<p class="empty">No chats yet. Find someone from Home.</p>';
+      return;
     }
 
-    if(!$("searchInput").value.trim()) renderPeople(people);
+    const chats = snapshot.docs.map(d => ({id:d.id, ...d.data()}));
+    chats.sort((a,b) => {
+      const at = a.updatedAt?.toMillis?.() || 0;
+      const bt = b.updatedAt?.toMillis?.() || 0;
+      return bt - at;
+    });
+
+    const rows = await Promise.all(chats.map(async chat => {
+      const otherUid = chat.members.find(uid => uid !== currentUser.uid);
+      const userSnap = await getDoc(doc(db, "users", otherUid));
+      const user = userSnap.exists() ? userSnap.data() : {
+        uid:otherUid, name:"Unknown user", username:""
+      };
+
+      return {chat, user};
+    }));
+
+    area.innerHTML = rows.map(({chat,user}) => `
+      <div class="user-row" data-uid="${escapeHTML(user.uid)}">
+        ${avatarHTML(user)}
+        <div class="user-info">
+          <strong>${escapeHTML(user.name)}</strong>
+          <small>${escapeHTML(chat.lastMessage || "Start chatting")}</small>
+        </div>
+        <span class="muted">${chat.lastTime ? formatTime(chat.lastTime) : ""}</span>
+      </div>
+    `).join("");
+
+    area.querySelectorAll(".user-row").forEach(row => {
+      row.onclick = () => openChat(rows.find(r => r.user.uid === row.dataset.uid).user);
+    });
   }, error => {
-    $("userList").textContent = friendlyError(error);
+    $("chatList").innerHTML = `<p class="muted">${escapeHTML(error.message)}</p>`;
   });
 }
 
+/* OPEN ONE-TO-ONE CHAT */
+async function openChat(otherUser) {
+  if (!otherUser || otherUser.uid === currentUser.uid) return;
 
-/* One-to-one messaging */
-
-async function openChat(person){
-  if(!currentUser || !person?.uid) return;
-
-  activePerson = person;
-  activeChatId = chatIdFor(currentUser.uid, person.uid);
-
-  $("layout").classList.add("chat-open");
-
-  if(unsubscribeMessages) unsubscribeMessages();
-
-  $("chatPanel").innerHTML = `
-    <div class="chat-head">
-      <button class="icon-btn mobile-back" id="backBtn">‹</button>
-      ${avatarHTML(person)}
-      <div class="user-info">
-        <strong>${escapeHTML(person.name || "User")}</strong>
-        <small>@${escapeHTML(person.username || "")}</small>
-      </div>
-      <button class="icon-btn" id="chatProfileBtn">Profile</button>
-    </div>
-    <div class="messages" id="messages">
-      <div class="chat-empty">Loading messages...</div>
-    </div>
-    <form class="composer" id="messageForm">
-      <input id="messageInput" maxlength="5000" autocomplete="off" placeholder="Write a message...">
-      <button class="btn" type="submit">Send</button>
-    </form>
-  `;
-
-  $("backBtn").addEventListener("click", () => {
-    $("layout").classList.remove("chat-open");
-  });
-  $("chatProfileBtn").addEventListener("click", () => openProfile(person, false));
-
-  $("messageForm").addEventListener("submit", sendMessage);
+  activeOtherUser = otherUser;
+  activeChatId = chatIdFor(currentUser.uid, otherUser.uid);
 
   const chatRef = doc(db, "chats", activeChatId);
-  await setDoc(chatRef, {
-    participants:[currentUser.uid, person.uid].sort(),
-    updatedAt:serverTimestamp()
-  }, {merge:true});
+  const chatSnap = await getDoc(chatRef);
 
-  const messagesQuery = query(
+  if (!chatSnap.exists()) {
+    await setDoc(chatRef, {
+      members: [currentUser.uid, otherUser.uid].sort(),
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+      lastMessage: "",
+      lastTime: null
+    });
+  }
+
+  $("chatName").textContent = otherUser.name || "User";
+  $("chatAvatar").textContent = (otherUser.name || "U").charAt(0).toUpperCase();
+  $("chatPresence").textContent = otherUser.online ? "● Online" : "Offline";
+  $("chatListArea").style.display = "none";
+  $("chatArea").style.display = "block";
+
+  if (unsubscribeMessages) unsubscribeMessages();
+  if (unsubscribePresence) unsubscribePresence();
+
+  const presenceRef = doc(db, "users", otherUser.uid);
+  unsubscribePresence = onSnapshot(presenceRef, snap => {
+    if (!snap.exists()) return;
+    const data = snap.data();
+    if (data.online) {
+      $("chatPresence").textContent = "● Online";
+    } else {
+      const last = data.lastSeen?.toDate?.();
+      $("chatPresence").textContent = last
+        ? "Last seen " + last.toLocaleString()
+        : "Offline";
+    }
+  });
+
+  const messageQuery = query(
     collection(db, "chats", activeChatId, "messages"),
     orderBy("createdAt", "asc"),
     limit(200)
   );
 
-  unsubscribeMessages = onSnapshot(messagesQuery, snapshot => {
-    const box = $("messages");
-    if(!box) return;
+  unsubscribeMessages = onSnapshot(messageQuery, snapshot => {
+    const area = $("messages");
 
-    const wasNearBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 120;
-    box.innerHTML = "";
-
-    if(snapshot.empty){
-      box.innerHTML = '<div class="chat-empty">Say hello and start your conversation.</div>';
+    if (snapshot.empty) {
+      area.innerHTML = '<p class="empty">Say hello and start chatting!</p>';
       return;
     }
 
-    snapshot.forEach(messageDoc => {
-      const message = messageDoc.data();
-      const mine = message.senderId === currentUser.uid;
-      const div = document.createElement("div");
-      div.className = "msg" + (mine ? " mine" : "");
-      div.textContent = message.text || "";
+    area.innerHTML = snapshot.docs.map(messageDoc => {
+      const m = messageDoc.data();
+      const mine = m.senderId === currentUser.uid;
+      const seen = (m.seenBy || []).includes(otherUser.uid);
 
-      const time = document.createElement("small");
-      time.textContent = formatTime(message.createdAt);
-      div.appendChild(time);
-      box.appendChild(div);
+      return `
+        <div class="msg ${mine ? "mine" : ""}">
+          ${escapeHTML(m.text || "")}
+          <small>${formatTime(m.createdAt)}
+            ${mine ? (seen ? " · Seen" : " · Sent") : ""}
+          </small>
+        </div>
+      `;
+    }).join("");
+
+    area.scrollTop = area.scrollHeight;
+
+    // Mark received messages as seen.
+    snapshot.docs.forEach(async messageDoc => {
+      const m = messageDoc.data();
+
+      if (m.senderId !== currentUser.uid &&
+          !(m.seenBy || []).includes(currentUser.uid)) {
+        try {
+          await updateDoc(messageDoc.ref, {
+            seenBy: arrayUnion(currentUser.uid)
+          });
+        } catch (error) {
+          console.log("Seen update:", error.message);
+        }
+      }
     });
-
-    if(wasNearBottom) box.scrollTop = box.scrollHeight;
   }, error => {
-    $("messages").textContent = friendlyError(error);
+    $("messages").innerHTML = `<p class="muted">${escapeHTML(error.message)}</p>`;
   });
 
-  setTimeout(() => {
-    const input = $("messageInput");
-    if(input && window.innerWidth <= 700) input.focus();
-  }, 250);
+  showPage("chatsPage");
+  $("chatListArea").style.display = "none";
+  $("chatArea").style.display = "block";
 }
 
-async function sendMessage(event){
-  event.preventDefault();
-  const input = $("messageInput");
-  const text = input.value.trim();
+function closeChat() {
+  if (unsubscribeMessages) unsubscribeMessages();
+  if (unsubscribePresence) unsubscribePresence();
+  unsubscribeMessages = null;
+  unsubscribePresence = null;
+  activeChatId = null;
+  activeOtherUser = null;
 
-  if(!text || !activeChatId || !activePerson) return;
-
-  input.value = "";
-
-  try{
-    const chatRef = doc(db, "chats", activeChatId);
-    const messagesRef = collection(db, "chats", activeChatId, "messages");
-
-    await addDoc(messagesRef, {
-      text,
-      senderId:currentUser.uid,
-      createdAt:serverTimestamp()
-    });
-
-    await updateDoc(chatRef, {
-      lastMessage:text.slice(0,100),
-      lastMessageAt:serverTimestamp(),
-      updatedAt:serverTimestamp()
-    });
-  }catch(error){
-    input.value = text;
-    alert("Message পাঠানো যায়নি: " + friendlyError(error));
+  if (currentPage === "chatsPage") {
+    $("chatListArea").style.display = "block";
+    $("chatArea").style.display = "none";
   }
 }
 
+$("backChats").onclick = () => {
+  closeChat();
+  showPage("chatsPage");
+};
 
-/* Mobile keyboard layout */
+/* SEND MESSAGE */
+$("sendForm").onsubmit = async event => {
+  event.preventDefault();
 
-if(window.visualViewport){
-  const adjustViewport = () => {
-    document.documentElement.style.setProperty(
-      "--visible-height",
-      window.visualViewport.height + "px"
-    );
-  };
-  window.visualViewport.addEventListener("resize", adjustViewport);
-  window.visualViewport.addEventListener("scroll", adjustViewport);
-  adjustViewport();
+  const text = $("messageInput").value.trim();
+  if (!text || !activeChatId || !activeOtherUser) return;
+
+  $("messageInput").disabled = true;
+
+  try {
+    const chatRef = doc(db, "chats", activeChatId);
+
+    await addDoc(collection(db, "chats", activeChatId, "messages"), {
+      senderId: currentUser.uid,
+      text,
+      type: "text",
+      seenBy: [currentUser.uid],
+      createdAt: serverTimestamp()
+    });
+
+    await updateDoc(chatRef, {
+      lastMessage: text.slice(0, 100),
+      lastSenderId: currentUser.uid,
+      lastTime: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+
+    $("messageInput").value = "";
+  } catch (error) {
+    alert("Message could not be sent: " + error.message);
+  } finally {
+    $("messageInput").disabled = false;
+    $("messageInput").focus();
+  }
+};
+
+/* NAVIGATION */
+document.querySelectorAll(".bottom-nav button").forEach(button => {
+  button.onclick = () => showPage(button.dataset.page);
+});
+
+/* THEME */
+const savedTheme = localStorage.getItem("youtalk-theme");
+if (savedTheme === "dark") document.body.classList.add("dark");
+
+$("themeBtn").onclick = () => {
+  document.body.classList.toggle("dark");
+  localStorage.setItem(
+    "youtalk-theme",
+    document.body.classList.contains("dark") ? "dark" : "light"
+  );
+  $("menu").style.display = "none";
+};
+
+/* MENU */
+$("menuBtn").onclick = () => {
+  $("menu").style.display =
+    $("menu").style.display === "block" ? "none" : "block";
+};
+
+document.addEventListener("click", event => {
+  if (!event.target.closest("#menu") && !event.target.closest("#menuBtn")) {
+    $("menu").style.display = "none";
+  }
+});
+
+/* NOTIFICATION PERMISSION */
+async function enableNotifications() {
+  if (!("Notification" in window)) {
+    alert("This browser does not support notifications.");
+    return;
+  }
+
+  const permission = await Notification.requestPermission();
+
+  if (permission === "granted") {
+    new Notification("YouTalk", {
+      body: "Notifications are enabled!"
+    });
+  } else {
+    alert("Notification permission was not granted.");
+  }
 }
+
+$("notificationBtn").onclick = enableNotifications;
+$("notificationMenuBtn").onclick = enableNotifications;
+
+/* LOGOUT */
+function stopListeners() {
+  if (unsubscribeChats) unsubscribeChats();
+  if (unsubscribeMyProfile) unsubscribeMyProfile();
+  if (unsubscribeMessages) unsubscribeMessages();
+  if (unsubscribePresence) unsubscribePresence();
+
+  unsubscribeChats = null;
+  unsubscribeMyProfile = null;
+  unsubscribeMessages = null;
+  unsubscribePresence = null;
+}
+
+$("logoutBtn").onclick = async () => {
+  if (!confirm("Are you sure you want to logout?")) return;
+
+  try {
+    await setOnline(false);
+    stopListeners();
+    await signOut(auth);
+    $("menu").style.display = "none";
+  } catch (error) {
+    alert(error.message);
+  }
+};
+
+/* SPLASH SCREEN */
+setTimeout(() => {
+  $("splash").style.display = "none";
+  $("app").style.display = "block";
+}, 1800);
 
 </script>
 </body>
